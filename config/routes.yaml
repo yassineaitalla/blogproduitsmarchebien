@@ -1,0 +1,9 @@
+controllers:
+    resource:
+        path: ../src/Controller/
+        namespace: App\Controller
+    type: attribute
+
+page_accueil:
+    path: /   # Il faut laisser le slash pour que la page qui souvre en premier et la page accueil
+    controller: 'App\Controller\BlogController::accueil'
