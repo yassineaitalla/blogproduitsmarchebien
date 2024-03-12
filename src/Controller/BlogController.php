@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 use App\Entity\Client;
+use App\Entity\Societe;
 
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
@@ -25,27 +26,43 @@ class BlogController extends AbstractController
     public function Client(Request $request, EntityManagerInterface $entityManager): Response
     {
         if ($request->isMethod('POST')) {
-            // Récupérer les données du formulaire
             $nom = $request->request->get('nom');
             $prenom = $request->request->get('prenom');
-
+            $nomSociete = $request->request->get('societe');
+            $siret = $request->request->get('siret');
+    
             // Créer une instance de l'entité Client
             $client = new Client();
             $client->setNom($nom);
             $client->setPrenom($prenom);
-
-            // Persister l'entité et enregistrer dans la base de données
+    
+            // Créer une instance de l'entité Societe
+            $societe = new Societe();
+            $societe->setNomSociete($nomSociete);
+            $societe->setsiret($siret);
+    
+            // Associer le client à la société (ajustez cela en fonction de votre relation)
+            $societe->setclient($client);
+    
+            // Persister les entités et enregistrer dans la base de données
             $entityManager->persist($client);
+            $entityManager->persist($societe);
             $entityManager->flush();
-
+    
             // Ajouter un message flash
-            $this->addFlash('success', 'Le compte a été créé avec succès !');
-
+            $this->addFlash('success', 'Les données ont été créées avec succès !');
+    
             // Rediriger l'utilisateur vers une autre page après l'ajout
-            return $this->redirectToRoute('page_formpro');  // Remplacez 'votre_route' par le nom de votre route de redirection
+            return $this->redirectToRoute('page_formpro');
         }
-
+    
         // Si la méthode est GET, renvoyez simplement le template
         return $this->render('formpro.html.twig');
     }
+
+   
 }
+
+
+
+
