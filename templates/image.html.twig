@@ -1,0 +1,18 @@
+<!-- image.html.twig -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajouter une image</title>
+</head>
+<body>
+    <h1>Ajouter une image</h1>
+    <form action="{{ path('image') }}" method="POST" enctype="multipart/form-data">
+        <label for="image">Choisir une image :</label><br>
+        <input type="file" id="image" name="image" accept="image/*"><br><br>
+        <button type="submit">Ajouter</button>
+    </form>
+</body>
+</html>

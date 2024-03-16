@@ -4,8 +4,9 @@ namespace App\Controller;
 use App\Entity\Client;
 use App\Entity\Societe;
 use App\Entity\Produit;
+use App\Entity\Test;
 use App\Entity\Panier;
-
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 
 use Symfony\Component\HttpFoundation\Request;
@@ -78,10 +79,12 @@ class BlogController extends AbstractController
     
 
     private $entityManager;
+    private $panierService;
 
     public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
+        
     }
 
     #[Route('/produits', name: 'produits')]
@@ -132,6 +135,72 @@ public function ajouterAuPanier($id): Response
         ]);
     }
 
+
+
+
+    #[Route('/comptage', name: 'comptage')]
+    public function countProductsInPanierAction(EntityManagerInterface $entityManager)
+    {
+        // Récupérer le référentiel (repository) de l'entité Panier
+        $panierRepository = $entityManager->getRepository(Panier::class);
+
+        // Récupérer le nombre de produits dans le panier
+        $count = $panierRepository->countProducts();
+
+        // Passer la variable $count à la vue et rendre le template
+        return $this->render('navbar.html.twig', [
+            'count' => $count,
+        ]);
+    }
+
+
+     #[Route('/image', name: 'image')]
+     public function ajouterImage(Request $request): Response
+     {
+         if ($request->isMethod('POST')) {
+             // Créer une nouvelle instance de l'entité Test
+             $test = new Test();
+ 
+             // Récupérer le fichier image envoyé depuis le formulaire
+             $imageFile = $request->files->get('image');
+ 
+             if ($imageFile) {
+                 // Générer un nom de fichier unique
+                 $nomFichier = uniqid().'.'.$imageFile->getClientOriginalExtension();
+ 
+                 // Déplacer le fichier dans le répertoire où sont stockées les images
+                 try {
+                     $imageFile->move(
+                         $this->getParameter('dossier_images'),
+                         $nomFichier
+                     );
+                 } catch (FileException $e) {
+                     // Gérer l'exception si le fichier ne peut pas être déplacé
+                 }
+ 
+                 // Mettre à jour la propriété 'image' de l'entité Test avec le nom du fichier
+                 $test->setImage($nomFichier);
+ 
+                 // Persister l'entité dans la base de données
+                 $this->entityManager->persist($test);
+                 $this->entityManager->flush();
+ 
+                 // Rediriger vers une page de succès ou une autre action
+                 return $this->redirectToRoute('image');
+             }
+         }
+ 
+         // Afficher le formulaire
+         return $this->render('image.html.twig');
+     }
+}
+
+
+
+
+   
+    
+
     
 
     
@@ -140,7 +209,7 @@ public function ajouterAuPanier($id): Response
 
     
     
-}
+
 
     
 

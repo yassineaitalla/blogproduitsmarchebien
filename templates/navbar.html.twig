@@ -48,7 +48,11 @@
     <div class="d-flex">
       <a href="" style="margin-right: 20px;">
           <i class="bi bi-cart4" style="font-size: 24px; color: white;"></i>
-          
+          <label>Panier (
+              {% for count in count %}
+                  {{ count }}
+              {% endfor %}
+          )</label>
       </a>
   </div>
       
