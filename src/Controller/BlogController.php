@@ -193,6 +193,23 @@ public function ajouterAuPanier($id): Response
          // Afficher le formulaire
          return $this->render('image.html.twig');
      }
+
+     #[Route('/image1', name: 'image1')]
+
+
+     public function afficherImage(): Response
+     {
+         // Récupérer l'image depuis l'entité Test
+         $test = $this->entityManager->getRepository(Test::class)->findOneBy([]);
+ 
+         // Récupérer le nom du fichier de l'image
+         $nomImage = $test ? $test->getImage() : null;
+ 
+         // Afficher le template avec le nom du fichier de l'image
+         return $this->render('image.html.twig', [
+             'nomImage' => $nomImage,
+         ]);
+     }
 }
 
 
