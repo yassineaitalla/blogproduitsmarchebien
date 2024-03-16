@@ -42,35 +42,41 @@
     </ul>
     
 
-      <div class="d-flex">
+
         
         
-        <a class="nav-link" id="cart-link" href="#">
-          <a href=" " style="margin-right: 20px;"> <i class="bi bi-cart4" style="font-size: 24px; color: white;"></i><label>Panier</label></a>
-          <span id="cart-counter" style="color: bisque; margin-left: 10px;">0</span>
-        </a>
+        <div class="d-flex">
+          <a href="" style="margin-right: 20px;">
+              <i class="bi bi-cart4" style="font-size: 24px; color: white;"></i>
+              <label>Panier</label>
+          </a>
+          
       </div>
+      
+    
     </div>
   </div>
 </nav>
 
 <script>
+  
   $(document).ready(function () {
-    var wishlistCounter = 0;
-    var cartCounter = 0;
-
-    $("#wishlist-link").click(function (e) {
-      e.preventDefault();
-      wishlistCounter++;
-      $("#wishlist-counter").text(wishlistCounter);
+    var cartCounter = $("#cart-counter").data('cart-counter');
+    $(".add-to-cart").click(function (e) {
+        e.preventDefault();
+        var productId = $(this).data('id');
+        $.ajax({
+            type: "POST",
+            url: "/ajouter-au-panier/" + productId,
+            success: function (response) {
+                // Mise à jour du nombre de produits dans la navbar
+                cartCounter++;
+                $("#cart-counter").text(cartCounter);
+            }
+        });
     });
+});
 
-    $("#cart-link").click(function (e) {
-      e.preventDefault();
-      cartCounter++;
-      $("#cart-counter").text(cartCounter);
-    });
-  });
 </script>
 
 </body>

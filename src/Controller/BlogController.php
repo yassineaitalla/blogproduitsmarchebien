@@ -3,12 +3,16 @@
 namespace App\Controller;
 use App\Entity\Client;
 use App\Entity\Societe;
+use App\Entity\Produit;
+
+
 
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;  // Importe la classe Route de l'attribut Route.
+
 
 class BlogController extends AbstractController
 {
@@ -22,6 +26,8 @@ class BlogController extends AbstractController
             'message' => 'Bienvenue sur la page d\'accueil !',
         ]);
     }
+
+    
     #[Route('/formpro', name: 'page_formpro')]
     public function Client(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -60,8 +66,34 @@ class BlogController extends AbstractController
         return $this->render('formpro.html.twig');
     }
 
+    private $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
+    #[Route('/produits', name: 'produits')]
+    public function index(EntityManagerInterface $entityManager): Response
+    {
+        $produits = $entityManager->getRepository(Produit::class)->findAll();
+
+        return $this->render('produits.html.twig', [
+            'produits' => $produits,
+        ]);
+    }
+
+    
+
    
+
+    
+    
 }
+
+    
+
+   
 
 
 
