@@ -4,6 +4,7 @@ namespace App\Controller;
 use App\Entity\Client;
 use App\Entity\Societe;
 use App\Entity\Produit;
+use App\Entity\Panier;
 
 
 
@@ -23,6 +24,14 @@ class BlogController extends AbstractController
     public function accueil(): Response
     {
         return $this->render('accueil.html.twig', [
+            'message' => 'Bienvenue sur la page d\'accueil !',
+        ]);
+    }
+
+    #[Route('/connexion', name: 'connexion')]
+    public function Connexion(): Response
+    {
+        return $this->render('connexion.html.twig', [
             'message' => 'Bienvenue sur la page d\'accueil !',
         ]);
     }
@@ -66,6 +75,8 @@ class BlogController extends AbstractController
         return $this->render('formpro.html.twig');
     }
 
+    
+
     private $entityManager;
 
     public function __construct(EntityManagerInterface $entityManager)
@@ -74,14 +85,54 @@ class BlogController extends AbstractController
     }
 
     #[Route('/produits', name: 'produits')]
-    public function index(EntityManagerInterface $entityManager): Response
+    public function index(): Response
     {
-        $produits = $entityManager->getRepository(Produit::class)->findAll();
+        $produits = $this->entityManager->getRepository(Produit::class)->findAll();
 
         return $this->render('produits.html.twig', [
             'produits' => $produits,
         ]);
     }
+
+    #[Route("/ajouter-au-panier/{id}", name:"ajouter_au_panier")]
+public function ajouterAuPanier($id): Response
+{
+    // Récupérer le produit à partir de son identifiant
+    $produit = $this->entityManager->getRepository(Produit::class)->find($id);
+
+    // Vérifier si le produit existe déjà dans le panier
+    $panierExistant = $this->entityManager->getRepository(Panier::class)->findOneBy(['id' => $produit]);
+
+    // Si le produit n'est pas déjà dans le panier, l'ajouter
+    if (!$panierExistant) {
+        // Créer une nouvelle instance de Panier
+        $panier = new Panier();
+        // Définir l'ID du produit dans le panier
+        $panier->setIdProduit($produit);
+        // Définir le total à null (pour l'instant)
+        $panier->setTotal('22');
+
+        // Persister le panier
+        $this->entityManager->persist($panier);
+        $this->entityManager->flush();
+    }
+
+    // Rediriger l'utilisateur vers une page de confirmation ou à la page précédente
+    return $this->redirectToRoute('produits');
+}
+
+
+#[Route('/affichagepanier', name: 'affichagepanier')]
+    public function affichagepanier(): Response
+    {
+        $panier = $this->entityManager->getRepository(Panier::class)->findAll();
+
+        return $this->render('panier.html.twig', [
+            'panier' => $panier,
+        ]);
+    }
+
+    
 
     
 

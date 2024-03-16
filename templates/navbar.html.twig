@@ -29,7 +29,7 @@
         </li>
     
         <li class="nav-item">
-            <a class="nav-link" href="">
+            <a class="nav-link" href="{{ path('produits') }}">
                 <i class="bi bi-box"></i> Nos produits
             </a>
         </li>
@@ -45,39 +45,18 @@
 
         
         
-        <div class="d-flex">
-          <a href="" style="margin-right: 20px;">
-              <i class="bi bi-cart4" style="font-size: 24px; color: white;"></i>
-              <label>Panier</label>
-          </a>
+    <div class="d-flex">
+      <a href="" style="margin-right: 20px;">
+          <i class="bi bi-cart4" style="font-size: 24px; color: white;"></i>
           
-      </div>
+      </a>
+  </div>
       
-    
+      </div>
     </div>
   </div>
 </nav>
 
-<script>
-  
-  $(document).ready(function () {
-    var cartCounter = $("#cart-counter").data('cart-counter');
-    $(".add-to-cart").click(function (e) {
-        e.preventDefault();
-        var productId = $(this).data('id');
-        $.ajax({
-            type: "POST",
-            url: "/ajouter-au-panier/" + productId,
-            success: function (response) {
-                // Mise à jour du nombre de produits dans la navbar
-                cartCounter++;
-                $("#cart-counter").text(cartCounter);
-            }
-        });
-    });
-});
-
-</script>
 
 </body>
 </html>
