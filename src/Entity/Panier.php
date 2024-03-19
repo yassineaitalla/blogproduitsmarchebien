@@ -21,7 +21,9 @@ class Panier
     #[ORM\JoinColumn(nullable: false)]
     private ?produit $id_produit = null;
 
-    private ?string $quantite = null;
+    #[ORM\Column(type: "integer")]  // Important de mettre les colonnes sinon l'ajout ne se fait pas 
+
+    private ?int $quantite = null;
 
     public function getId(): ?int
     {
