@@ -36,9 +36,13 @@ class Produit
     #[ORM\OneToMany(targetEntity: Panier::class, mappedBy: 'id_produit', orphanRemoval: true)]
     private Collection $paniers;
 
+    #[ORM\OneToMany(targetEntity: Stock::class, mappedBy: 'id_produit', orphanRemoval: true)]
+    private Collection $stocks;
+
     public function __construct()
     {
         $this->paniers = new ArrayCollection();
+        $this->stocks = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -142,6 +146,36 @@ class Produit
             // set the owning side to null (unless already changed)
             if ($panier->getIdProduit() === $this) {
                 $panier->setIdProduit(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Stock>
+     */
+    public function getStocks(): Collection
+    {
+        return $this->stocks;
+    }
+
+    public function addStock(Stock $stock): static
+    {
+        if (!$this->stocks->contains($stock)) {
+            $this->stocks->add($stock);
+            $stock->setIdProduit($this);
+        }
+
+        return $this;
+    }
+
+    public function removeStock(Stock $stock): static
+    {
+        if ($this->stocks->removeElement($stock)) {
+            // set the owning side to null (unless already changed)
+            if ($stock->getIdProduit() === $this) {
+                $stock->setIdProduit(null);
             }
         }
 

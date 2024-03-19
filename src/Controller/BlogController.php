@@ -194,6 +194,9 @@ public function ajouterAuPanier($id): Response
          return $this->render('image.html.twig');
      }
 
+
+
+     
      #[Route('/image1', name: 'image1')]
 
 
@@ -206,7 +209,7 @@ public function ajouterAuPanier($id): Response
          $nomImage = $test ? $test->getImage() : null;
  
          // Afficher le template avec le nom du fichier de l'image
-         return $this->render('image.html.twig', [
+         return $this->render('image1.html.twig', [
              'nomImage' => $nomImage,
          ]);
      }

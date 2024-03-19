@@ -21,6 +21,8 @@ class Panier
     #[ORM\JoinColumn(nullable: false)]
     private ?produit $id_produit = null;
 
+    private ?string $quantite = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -34,6 +36,19 @@ class Panier
     public function setTotal(string $total): static
     {
         $this->total = $total;
+
+        return $this;
+    }
+//
+
+    public function getquantite(): ?int
+    {
+        return $this->quantite;
+    }
+
+    public function setquantite(int $quantite): static
+    {
+        $this->quantite = $quantite;
 
         return $this;
     }

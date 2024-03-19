@@ -1,0 +1,23 @@
+{# image.html.twig #}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Afficher une image</title>
+</head>
+<body>
+    <h1>Afficher une image</h1>
+
+    {% if nomImage %}
+        {# Générer l'URL de l'image à partir du nom du fichier #}
+        {% set imageUrl = asset('images/' ~ nomImage) %}
+
+        {# Afficher l'image #}
+        <img src="{{ imageUrl }}" alt="Image">
+    {% else %}
+        <p>Aucune image à afficher.</p>
+    {% endif %}
+</body>
+</html>
