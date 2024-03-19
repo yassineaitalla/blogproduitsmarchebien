@@ -123,12 +123,13 @@ public function ajouterAuPanier(Request $request, $id): Response
 
     // Si le produit n'est pas déjà dans le panier, l'ajouter
     if (!$panierExistant) {
+        $total = $quantite * $produit->getPrix();
         // Créer une nouvelle instance de Panier
         $panier = new Panier();
         // Définir l'ID du produit dans le panier
         $panier->setIdProduit($produit);
         // Définir le total à null (pour l'instant)
-        $panier->setTotal('22');
+        $panier->setTotal($total);
         // Définir la quantité dans le panier
         $panier->setQuantite($quantite);
         
@@ -139,6 +140,7 @@ public function ajouterAuPanier(Request $request, $id): Response
         // Si le produit est déjà dans le panier, modifier la quantité
         $panierExistant->setQuantite($quantite);
         // Persister les modifications du panier existant
+        $panierExistant->setTotal($quantite * $produit->getPrix());
         $this->entityManager->flush();
     }
 
