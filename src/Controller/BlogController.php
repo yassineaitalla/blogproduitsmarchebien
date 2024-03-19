@@ -98,13 +98,28 @@ class BlogController extends AbstractController
     }
 
     #[Route("/ajouter-au-panier/{id}", name:"ajouter_au_panier")]
-public function ajouterAuPanier($id): Response
+public function ajouterAuPanier(Request $request, $id): Response
 {
     // Récupérer le produit à partir de son identifiant
     $produit = $this->entityManager->getRepository(Produit::class)->find($id);
 
     // Vérifier si le produit existe déjà dans le panier
-    $panierExistant = $this->entityManager->getRepository(Panier::class)->findOneBy(['id' => $produit]);
+    $panierExistant = $this->entityManager->getRepository(Panier::class)->findOneBy(['id_produit' => $produit]);
+
+    // Si la requête est de type POST, récupérer la quantité saisie par l'utilisateur
+    if ($request->isMethod('POST')) {
+        $quantite = $request->request->get('quantite');
+        // Vérifier si la quantité est définie et non vide
+        if ($quantite !== null && $quantite !== '') {
+            $quantite = intval($quantite); // Convertir en entier
+        } else {
+            // Si la quantité n'est pas définie ou vide, mettre la quantité par défaut à 1
+            $quantite = 1;
+        }
+    } else {
+        // Si la requête n'est pas de type POST, mettre la quantité par défaut à 1
+        $quantite = 1;
+    }
 
     // Si le produit n'est pas déjà dans le panier, l'ajouter
     if (!$panierExistant) {
@@ -114,15 +129,24 @@ public function ajouterAuPanier($id): Response
         $panier->setIdProduit($produit);
         // Définir le total à null (pour l'instant)
         $panier->setTotal('22');
-
+        // Définir la quantité dans le panier
+        $panier->setQuantite($quantite);
+        
         // Persister le panier
         $this->entityManager->persist($panier);
+        $this->entityManager->flush();
+    } else {
+        // Si le produit est déjà dans le panier, modifier la quantité
+        $panierExistant->setQuantite($quantite);
+        // Persister les modifications du panier existant
         $this->entityManager->flush();
     }
 
     // Rediriger l'utilisateur vers une page de confirmation ou à la page précédente
     return $this->redirectToRoute('produits');
 }
+
+    
 
 
 #[Route('/affichagepanier', name: 'affichagepanier')]
@@ -196,7 +220,7 @@ public function ajouterAuPanier($id): Response
 
 
 
-     
+
      #[Route('/image1', name: 'image1')]
 
 

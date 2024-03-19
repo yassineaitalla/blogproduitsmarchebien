@@ -26,12 +26,21 @@
                                 <h5 class="card-title">Remise de {{ produit.remise }} %</h5>
                               
                                 <p class="card-text">Prix du produit {{ produit.prix }} €</p>
-                                <a href="{{ path('ajouter_au_panier', {'id': produit.id}) }}" class="btn btn-primary add-to-cart">Ajouter au panier</a>
+                                <h6> Quantité
+                                
+                                </h6>
 
+                                <form action="{{ path('ajouter_au_panier', {'id': produit.id}) }}" method="post"> 
+                                    <input type="number" name="quantite" id="quantite" value="1" min="1" class="form-control">
+                                    <button type="submit" class="btn btn-primary">Ajouter au panier</button>
+                                </form>
+                                
 
                             </div>
                         </div>
                     </div>
+
+                    
                 {% endfor %}
             </div>
         </div>
