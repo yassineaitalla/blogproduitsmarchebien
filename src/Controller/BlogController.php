@@ -2,10 +2,12 @@
 
 namespace App\Controller;
 use App\Entity\Client;
+use App\Entity\Listedenvies;
 use App\Entity\Societe;
 use App\Entity\Produit;
 use App\Entity\Test;
 use App\Entity\Panier;
+
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 
@@ -98,13 +100,11 @@ class BlogController extends AbstractController
     }
 
     #[Route("/ajouter-au-panier/{id}", name:"ajouter_au_panier")]
-
     public function ajouterAuPanier(Request $request, $id): Response
     {
         // Récupérer le produit à partir de son identifiant
         $produit = $this->entityManager->getRepository(Produit::class)->find($id);
-    
-        // Si le produit n'existe pas, rediriger vers une page d'erreur ou afficher un message d'erreur
+       // Si le produit n'existe pas, rediriger vers une page d'erreur ou afficher un message d'erreur
         if (!$produit) {
             // Redirection vers une page d'erreur ou affichage d'un message d'erreur
         }
@@ -144,10 +144,7 @@ class BlogController extends AbstractController
             $panier->setTotal($total);
             // Définir la quantité dans le panier
             $panier->setQuantite($quantite);
-
-            
-            
-            
+       
             // Persister le panier
             $this->entityManager->persist($panier);
         } else {
@@ -167,8 +164,6 @@ class BlogController extends AbstractController
             $panierExistant->setTotal($total);
         }
 
-        
-    
         // Enregistrer les modifications dans la base de données
         $this->entityManager->flush();
     
@@ -292,6 +287,36 @@ class BlogController extends AbstractController
         // Retourner le template Twig en passant la variable nombre_elements
         return $this->render('/navbar.html.twig', ['nombre_elements' => $nombreElements]);
     }
+
+
+    //
+    
+    #[Route("/ajouter-au-laliste/{id}", name:"ajouter_a_la_listedenvie")]
+    
+    public function ajouterAlalistedenvie(Request $request, $id): Response
+{
+    // Récupérer le produit à partir de son identifiant
+    $produit = $this->entityManager->getRepository(Produit::class)->find($id);
+
+    // Vérifier si le produit existe
+    if (!$produit) {
+        // Redirection vers une page d'erreur ou affichage d'un message d'erreur
+    }
+
+    // Créer une nouvelle instance de Listedenvies
+    $listedenvies = new Listedenvies();
+    $listedenvies->setIdproduit($produit);
+
+    // Persister la liste d'envies
+    $this->entityManager->persist($listedenvies);
+
+    // Enregistrer les modifications dans la base de données
+    $this->entityManager->flush();
+
+    // Rediriger l'utilisateur vers une page de confirmation ou à la page précédente
+    return $this->redirectToRoute('produits');
+}
+
 
 }
 

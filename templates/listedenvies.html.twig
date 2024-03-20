@@ -7,7 +7,7 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Produits</title>
+        <title></title>
         <link rel="stylesheet" href="{{ asset('templates/style.css') }}">
     </head>
 
@@ -30,16 +30,9 @@
                                 
                                 </h6>
 
-                                <form action="{{ path('ajouter_au_panier', {'id': produit.id}) }}" method="post"> 
+                                <form action="{{ path('ajouter_a_la_listedenvie', {'id': produit.id}) }}" method="post"> 
                                     <input type="number" name="quantite" id="quantite" value="1" min="1" class="form-control">
                                     <button type="submit" class="btn btn-primary">Ajouter au panier</button>
-                                  
-                                </form>
-
-                                <form action="{{ path('ajouter_a_la_listedenvie', {'id': produit.id}) }}" method="post"> 
-                                 
-                                    
-                                    <button type="submit"  class="btn btn-primary" >Ajouter à la liste d'envies</button>
                                 </form>
                                 
 
