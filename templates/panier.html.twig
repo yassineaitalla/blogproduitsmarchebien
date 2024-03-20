@@ -15,20 +15,36 @@
                     <table class="table table-striped">
                         <thead class="thead-dark">
                             <tr>
-                                <th scope="col">ID</th>
+                                
                                 <th scope="col">Produit</th>
-                                <th scope="col">Total</th>
+                                <th scope="col">Quantite</th>
+                                <th scope="col">Prix ( Remise 10 %  ) </th>
+                              
                             </tr>
                         </thead>
                         <tbody>
                             {% for panier in panier %}
                             <tr>
-                                <td>{{ panier.id }}</td>
-                                <td>{{ panier.getIdProduit().getNom() }}</td>
+                               
+                                <td>{{ panier.getIdProduit().getNom() }} </td>
+                                <td>{{ panier.quantite }}</td>
                                 <td>{{ panier.total }}</td>
+                               
+                                
+           
                             </tr>
+
+                            
+
+                            
                             {% endfor %}
                         </tbody>
+
+                        <tr>
+                            <td colspan="2" class="text-right"><strong>Total:</strong></td>
+                            <td class="text-right">{{ sommeTotal }} €</td>
+                        </tr>
+                        
                     </table>
                 </div>
             </div>

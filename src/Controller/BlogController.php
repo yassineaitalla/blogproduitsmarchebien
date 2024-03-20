@@ -98,17 +98,23 @@ class BlogController extends AbstractController
     }
 
     #[Route("/ajouter-au-panier/{id}", name:"ajouter_au_panier")]
-public function ajouterAuPanier(Request $request, $id): Response
-{
-    // Récupérer le produit à partir de son identifiant
-    $produit = $this->entityManager->getRepository(Produit::class)->find($id);
 
-    // Vérifier si le produit existe déjà dans le panier
-    $panierExistant = $this->entityManager->getRepository(Panier::class)->findOneBy(['id_produit' => $produit]);
-
-    // Si la requête est de type POST, récupérer la quantité saisie par l'utilisateur
-    if ($request->isMethod('POST')) {
+    public function ajouterAuPanier(Request $request, $id): Response
+    {
+        // Récupérer le produit à partir de son identifiant
+        $produit = $this->entityManager->getRepository(Produit::class)->find($id);
+    
+        // Si le produit n'existe pas, rediriger vers une page d'erreur ou afficher un message d'erreur
+        if (!$produit) {
+            // Redirection vers une page d'erreur ou affichage d'un message d'erreur
+        }
+    
+        // Vérifier si le produit existe déjà dans le panier
+        $panierExistant = $this->entityManager->getRepository(Panier::class)->findOneBy(['id_produit' => $produit]);
+    
+        // Récupérer la quantité saisie par l'utilisateur
         $quantite = $request->request->get('quantite');
+    
         // Vérifier si la quantité est définie et non vide
         if ($quantite !== null && $quantite !== '') {
             $quantite = intval($quantite); // Convertir en entier
@@ -116,51 +122,83 @@ public function ajouterAuPanier(Request $request, $id): Response
             // Si la quantité n'est pas définie ou vide, mettre la quantité par défaut à 1
             $quantite = 1;
         }
-    } else {
-        // Si la requête n'est pas de type POST, mettre la quantité par défaut à 1
-        $quantite = 1;
-    }
+    
+        // Si le produit n'est pas déjà dans le panier, l'ajouter
+        if (!$panierExistant) {
+            // Calculer le total en multipliant la quantité par le prix du produit
+            $total = $quantite * $produit->getPrix();
+    
+            // Vérifier s'il y a une remise sur le produit
+            if ($produit->getRemise() > 0) {
+                // Calculer le montant de la remise
+                $remise = $total * ($produit->getRemise() / 100);
+                // Appliquer la remise au total
+                $total = $total - $remise;
+            }
+    
+            // Créer une nouvelle instance de Panier
+            $panier = new Panier();
+            // Définir l'ID du produit dans le panier
+            $panier->setIdProduit($produit);
+            // Définir le total dans le panier
+            $panier->setTotal($total);
+            // Définir la quantité dans le panier
+            $panier->setQuantite($quantite);
 
-    // Si le produit n'est pas déjà dans le panier, l'ajouter
-    if (!$panierExistant) {
-        $total = $quantite * $produit->getPrix();
-        // Créer une nouvelle instance de Panier
-        $panier = new Panier();
-        // Définir l'ID du produit dans le panier
-        $panier->setIdProduit($produit);
-        // Définir le total à null (pour l'instant)
-        $panier->setTotal($total);
-        // Définir la quantité dans le panier
-        $panier->setQuantite($quantite);
+            
+            
+            
+            // Persister le panier
+            $this->entityManager->persist($panier);
+        } else {
+            // Si le produit est déjà dans le panier, modifier la quantité
+            $panierExistant->setQuantite($quantite);
+            // Calculer et définir le nouveau total dans le panier
+            $total = $quantite * $produit->getPrix();
+    
+            // Vérifier s'il y a une remise sur le produit
+            if ($produit->getRemise() > 0) {
+                // Calculer le montant de la remise
+                $remise = $total * ($produit->getRemise() / 100);
+                // Appliquer la remise au total
+                $total = $total - $remise;
+
+            }
+            $panierExistant->setTotal($total);
+        }
+
         
-        // Persister le panier
-        $this->entityManager->persist($panier);
+    
+        // Enregistrer les modifications dans la base de données
         $this->entityManager->flush();
-    } else {
-        // Si le produit est déjà dans le panier, modifier la quantité
-        $panierExistant->setQuantite($quantite);
-        // Persister les modifications du panier existant
-        $panierExistant->setTotal($quantite * $produit->getPrix());
-        $this->entityManager->flush();
+    
+        // Rediriger l'utilisateur vers une page de confirmation ou à la page précédente
+        return $this->redirectToRoute('produits');
     }
-
-    // Rediriger l'utilisateur vers une page de confirmation ou à la page précédente
-    return $this->redirectToRoute('produits');
-}
-
+    
     
 
 
-#[Route('/affichagepanier', name: 'affichagepanier')]
-    public function affichagepanier(): Response
+    #[Route('/affichagepanier', name: 'affichagepanier')]
+    public function affichagePanier(): Response
     {
-        $panier = $this->entityManager->getRepository(Panier::class)->findAll();
+        $panierRepository = $this->entityManager->getRepository(Panier::class);
+
+        // Obtenir tous les éléments du panier
+        $panier = $panierRepository->findAll();
+
+        // Calculer la somme totale de la colonne total
+        $query = $this->entityManager->createQuery(
+            'SELECT SUM(p.total) AS sommeTotal FROM App\Entity\Panier p'
+        );
+        $resultat = $query->getSingleScalarResult();
+        $sommeTotal = $resultat ? $resultat : 0;
 
         return $this->render('panier.html.twig', [
             'panier' => $panier,
+            'sommeTotal' => $sommeTotal,
         ]);
     }
-
 
 
 
@@ -224,9 +262,7 @@ public function ajouterAuPanier(Request $request, $id): Response
 
 
      #[Route('/image1', name: 'image1')]
-
-
-     public function afficherImage(): Response
+    public function afficherImage(): Response
      {
          // Récupérer l'image depuis l'entité Test
          $test = $this->entityManager->getRepository(Test::class)->findOneBy([]);
@@ -239,7 +275,27 @@ public function ajouterAuPanier(Request $request, $id): Response
              'nomImage' => $nomImage,
          ]);
      }
+     
+     
+
+  
+    #[Route('/nombre-elements-panier', name: 'nombre_elements')]
+    public function nombreElementsPanier(): Response
+    {
+        // Obtenir le nombre d'éléments dans l'entité Panier
+        $nombreElements = $this->entityManager->createQueryBuilder()
+            ->select('COUNT(p.id)')
+            ->from('App\Entity\Panier', 'p')
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        // Retourner le template Twig en passant la variable nombre_elements
+        return $this->render('/navbar.html.twig', ['nombre_elements' => $nombreElements]);
+    }
+
 }
+
+
 
 
 
