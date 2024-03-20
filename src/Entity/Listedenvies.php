@@ -17,6 +17,10 @@ class Listedenvies
     #[ORM\JoinColumn(nullable: false)]
     private ?produit $idproduit = null;
 
+
+
+   
+
     public function getId(): ?int
     {
         return $this->id;
@@ -33,4 +37,11 @@ class Listedenvies
 
         return $this;
     }
+
+    // Client
+
+
+
+    
 }
+

@@ -318,6 +318,20 @@ class BlogController extends AbstractController
 }
 
 
+
+#[Route('/affichagelistedenvie', name: 'affichagelistedenvie')]
+public function affichagelistedenvie(EntityManagerInterface $entityManager): Response
+{
+    $listedenviesRepository = $entityManager->getRepository(Listedenvies::class);
+
+    // Récupérer tous les éléments de la liste d'envies
+    $listedenvies = $listedenviesRepository->findAll();
+
+    return $this->render('listedenvies.html.twig', [
+        'listedenvies' => $listedenvies,
+    ]);
+}
+
 }
 
 
