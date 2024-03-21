@@ -212,7 +212,7 @@ class BlogController extends AbstractController
         ]);
     }
 
-
+//
      #[Route('/image', name: 'image')]
      public function ajouterImage(Request $request): Response
      {
