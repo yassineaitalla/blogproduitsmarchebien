@@ -18,6 +18,9 @@ class Produit
     #[ORM\Column(length: 255)]
     private ?string $nom = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $description = null;
+
     #[ORM\Column]
     private ?float $prix = null;
 
@@ -61,6 +64,34 @@ class Produit
 
         return $this;
     }
+
+
+    // Description 
+
+    public function getdescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setdescription(string $description): static
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+    
+
+
+
+
+
+
+
+
+
+
+
+
 
     public function getImage(): ?string
     {

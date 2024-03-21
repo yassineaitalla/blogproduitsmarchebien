@@ -40,6 +40,20 @@ class Listedenvies
 
     // Client
 
+    private $nomListedenvies;
+
+    public function getNomListedenvies(): ?string
+    {
+        return $this->nomListedenvies;
+    }
+
+    public function setNomListedenvies(string $nomListedenvies): static
+    {
+        $this->nomListedenvies = $nomListedenvies;
+
+        return $this;
+    }
+
 
 
     
