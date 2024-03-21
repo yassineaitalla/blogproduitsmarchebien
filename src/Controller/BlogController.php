@@ -117,6 +117,8 @@ class BlogController extends AbstractController
         if (!$produit) {
             // Redirection vers une page d'erreur ou affichage d'un message d'erreur
         }
+
+        
     
         // Vérifier si le produit existe déjà dans le panier
         $panierExistant = $this->entityManager->getRepository(Panier::class)->findOneBy(['id_produit' => $produit]);
@@ -144,6 +146,17 @@ class BlogController extends AbstractController
                 // Appliquer la remise au total
                 $total = $total - $remise;
             }
+
+            $client = $this->entityManager->getRepository(Client::class)->find("3");
+            // Si le produit n'existe pas, rediriger vers une page d'erreur ou afficher un message d'erreur
+             if (!$client) {
+                 // Redirection vers une page d'erreur ou affichage d'un message d'erreur
+             }
+     
+             
+         
+             // Vérifier si le produit existe déjà dans le panier
+             $panierExistant = $this->entityManager->getRepository(Panier::class)->findOneBy(['client' => $client]);
     
             // Créer une nouvelle instance de Panier
             $panier = new Panier();
@@ -153,6 +166,10 @@ class BlogController extends AbstractController
             $panier->setTotal($total);
             // Définir la quantité dans le panier
             $panier->setQuantite($quantite);
+
+            $panier->setClient($client);
+
+            
        
             // Persister le panier
             $this->entityManager->persist($panier);

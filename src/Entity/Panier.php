@@ -67,6 +67,28 @@ class Panier
         return $this;
     }
 
+
+    // Relation vers la table client 
+
+    #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: "client")]
+    #[ORM\JoinColumn(name: "client_id", referencedColumnName: "id")]
+     
+    private $client;
+
+    public function getClient(): ?Client
+    {
+        return $this->client;
+    }
+
+    public function setClient(?Client $client): self
+    {
+        $this->client = $client;
+
+        return $this;
+    }
+
+    // colonne longueurcm
+
     #[ORM\Column]
     private ?float $Longueurcm = null;
 
