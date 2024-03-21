@@ -31,6 +31,15 @@ class BlogController extends AbstractController
         ]);
     }
 
+    #[Route('/test', name: 'test')]
+    public function test(): Response
+    {
+        return $this->render('test.html.twig', [
+            'message' => 'Bienvenue sur la page d\'accueil !',
+        ]);
+    }
+
+
     #[Route('/connexion', name: 'connexion')]
     public function Connexion(): Response
     {

@@ -135,6 +135,7 @@ class Produit
     }
 
     ///
+    
 
     public function getLongueur(): ?float
     {

@@ -66,4 +66,20 @@ class Panier
 
         return $this;
     }
+
+    #[ORM\Column]
+    private ?float $Longueurcm = null;
+
+    public function getLongueurcm(): ?float
+    {
+        return $this->Longueurcm;
+    }
+
+    public function setLongueurcm(float $Longueurcm): static
+    {
+        $this->Longueurcm = $Longueurcm;
+
+        return $this;
+    } 
+    
 }
