@@ -25,10 +25,14 @@ class Produit
     private ?float $prix = null;
 
     #[ORM\Column]
-    private ?float $masseLineaire = null;
+    private ?float $Longueur = null;
 
     #[ORM\Column]
-    private ?float $prixdecoupe = null;
+    private ?float $masseLineaire = null;
+
+
+    #[ORM\Column]
+    private ?float $nombredecoupe = null;
 
     #[ORM\Column]
     private ?int $remise = null;
@@ -68,17 +72,6 @@ class Produit
 
     // Description 
 
-    public function getdescription(): ?string
-    {
-        return $this->description;
-    }
-
-    public function setdescription(string $description): static
-    {
-        $this->description = $description;
-
-        return $this;
-    }
     
 
 
@@ -117,6 +110,18 @@ class Produit
         return $this;
     }
 
+    public function getnombredecoupe(): ?float
+    {
+        return $this->nombredecoupe;
+    }
+
+    public function setnombredecoupe(float $massenombredecoupe): static
+    {
+        $this->nombredecoupe = $massenombredecoupe;
+
+        return $this;
+    }
+
     public function getMasseLineaire(): ?float
     {
         return $this->masseLineaire;
@@ -129,17 +134,20 @@ class Produit
         return $this;
     }
 
-    public function getPrixdecoupe(): ?float
+    ///
+
+    public function getLongueur(): ?float
     {
-        return $this->prixdecoupe;
+        return $this->Longueur;
     }
 
-    public function setPrixdecoupe(float $prixdecoupe): static
+    public function setLongueur(float $Longueur): static
     {
-        $this->prixdecoupe = $prixdecoupe;
+        $this->Longueur = $Longueur;
 
         return $this;
-    }
+    } 
+    
 
     public function getRemise(): ?int
     {
@@ -212,5 +220,18 @@ class Produit
 
         return $this;
     }
+
+    public function getdescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setdescription(string $description): static
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
 }
 

@@ -218,7 +218,7 @@ class BlogController extends AbstractController
      {
          if ($request->isMethod('POST')) {
              // Créer une nouvelle instance de l'entité Test
-             $test = new Test();
+             $produit = new Produit();
  
              // Récupérer le fichier image envoyé depuis le formulaire
              $imageFile = $request->files->get('image');
@@ -238,10 +238,10 @@ class BlogController extends AbstractController
                  }
  
                  // Mettre à jour la propriété 'image' de l'entité Test avec le nom du fichier
-                 $test->setImage($nomFichier);
+                 $produit->setImage($nomFichier);
  
                  // Persister l'entité dans la base de données
-                 $this->entityManager->persist($test);
+                 $this->entityManager->persist($produit);
                  $this->entityManager->flush();
  
                  // Rediriger vers une page de succès ou une autre action

@@ -16,20 +16,38 @@
                         <thead class="thead-dark">
                             <tr>
                                 
-                                <th scope="col">Nom</th>
-                                <th scope="col">Prix</th>
-                              
-                                
-                              
+                            
                             </tr>
                         </thead>
                         <tbody>
                             {% for listedenvies in listedenvies %}
                             <tr>
                                
-                                <td>{{ listedenvies.getIdProduit().getNom() }} </td> 
-                                <td>{{ listedenvies.getIdProduit().getprix()}} € </td> 
                                 
+                                
+                                <div class="col-md-4">
+                                    <div class="card">
+                                        <img src="" class="card-img-top" alt="">
+                                        <div class="card-body">
+                                            <h5 class="card-title"> Nom du produit : {{ listedenvies.getIdProduit().getNom()}} 6 M</h5>
+                                            <h5 class="card-title"> {{ listedenvies.getIdProduit().getprix()}} €</h5>
+                                        
+                                            
+                                            
+                                         
+            
+                                            <form action="" method="post"> 
+                                                <input type="number" name="quantite" id="quantite" value="1" min="1" class="form-control">
+                                                <button type="submit" class="btn btn-primary">Ajouter au panier</button>
+                                              
+                                            </form>
+            
+                                            
+                                            
+            
+                                        </div>
+                                    </div>
+                                </div>
                                 
                                
                                 
@@ -43,11 +61,10 @@
                             {% endfor %}
                         </tbody>
 
-                        <tr>
-                           
-                        </tr>
+                        
                         
                     </table>
+                    <button type="submit" style="margin-left: 700px;" class="btn btn-primary" >Ajouter au panier</button>
                 </div>
             </div>
         </div>
