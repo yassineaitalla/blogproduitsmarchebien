@@ -39,6 +39,15 @@ class BlogController extends AbstractController
         ]);
     }
 
+    #[Route('/compte', name: 'compte')]
+    public function pagecompte(): Response
+    {
+        return $this->render('compte.html.twig', [
+            'message' => 'Bienvenue sur la page d\'accueil !',
+        ]);
+    }
+
+
 
     #[Route('/connexion', name: 'connexion')]
     public function Connexion(): Response
@@ -146,14 +155,12 @@ class BlogController extends AbstractController
                 // Appliquer la remise au total
                 $total = $total - $remise;
             }
-
+            $quantite = $request->request->get('id');
             $client = $this->entityManager->getRepository(Client::class)->find("3");
             // Si le produit n'existe pas, rediriger vers une page d'erreur ou afficher un message d'erreur
              if (!$client) {
                  // Redirection vers une page d'erreur ou affichage d'un message d'erreur
              }
-     
-             
          
              // Vérifier si le produit existe déjà dans le panier
              $panierExistant = $this->entityManager->getRepository(Panier::class)->findOneBy(['client' => $client]);

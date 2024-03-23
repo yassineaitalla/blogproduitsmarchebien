@@ -22,6 +22,61 @@ class Client
     #[ORM\Column(length: 255)]
     private ?string $prenom = null;
 
+
+    #[ORM\Column(length: 255)]
+    private ?string $telephone ;
+
+    public function settelephone(string $telephone): self
+    {
+        $this->telephone = $telephone;
+
+        return $this;
+    }
+
+    public function gettelephone(): ?string
+    {
+        return $this->telephone;
+    }
+//
+
+
+    #[ORM\Column(length: 255)]
+    private ?string $email ;
+
+    public function setemail(string $email): self
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    public function getemail(): ?string
+    {
+        return $this->email;
+    }
+
+    //
+
+    #[ORM\Column(length: 255)]
+    private ?string $motdepasse ;
+
+    public function setmotdepasse(string $motdepasse): self
+    {
+        $this->motdepasse = $motdepasse;
+
+        return $this;
+    }
+
+    public function getmotdepasse(): ?string
+    {
+        return $this->motdepasse;
+    }
+
+
+
+    //
+
+
     #[ORM\OneToMany(targetEntity:Societe::class, mappedBy:"client")]
      
     private $societes;
