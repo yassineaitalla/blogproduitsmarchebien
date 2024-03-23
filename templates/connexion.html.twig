@@ -16,31 +16,31 @@
       <div class="container bg-primary p-5 rounded">
           <h1 class="text-center text-light">Connexion</h1>
 
-          <form method="post">
+          <form method="post" action="{{ path('connexion') }}">
               <div class="mb-3">
                   <label for="email" class="form-label text-light" req>E-mail</label>
                   <input type="text" name="email" class="form-control short-input" id="email" placeholder="Veuillez saisir votre adresse mail" required>
               </div>
 
               <div class="mb-3">
-                <label for="email" class="form-label text-light">Mot de passe</label>
-                <input type="text" name="email" class="form-control short-input" id="email" placeholder="Veuillez saisir votre mot de passe" required>
+                <label for="motdepasse" class="form-label text-light">Mot de passe</label>
+                <input type="password" name="motdepasse" class="form-control short-input" id="motdepasse" placeholder="Veuillez saisir votre mot de passe" required>
             </div>
               
               
 
               <div class="mb-3 mx-auto text-center" >
-                <a href="{{path('page_motdepasseoublie')}}" for="password" class="form-label text-light">Mot de passe oublié ?</a>
+                <a href="{{path('motdepasseoublie')}}" for="password" class="form-label text-light">Mot de passe oublié ?</a>
                 <button type="submit" class="btn btn-light" style="margin-left: 20px;">Connexion</button>
                 
               </div>
 
               <div class="mb-3 mx-auto text-center" >
-                <label href="{{path('page_motdepasseoublie')}}" for="password" class="form-label text-light">Pas de compte ? Créez-en un</label> 
+                <label href="" for="password" class="form-label text-light">Pas de compte ? Créez-en un</label> 
                 
               </div>
               <div class="mb-3 mx-auto text-center" >
-                <a href="{{path('page_formpart')}}" id="formpart" type="primary" class="btn btn-light" style="margin-left: 20px;" >Compte Particulier</a>
+                <a href="{{path('formpart')}}" id="formpart" type="primary" class="btn btn-light" style="margin-left: 20px;" >Compte Particulier</a>
 
                
 

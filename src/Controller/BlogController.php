@@ -11,7 +11,10 @@ use App\Entity\Panier;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 
+
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,6 +30,22 @@ class BlogController extends AbstractController
     public function accueil(): Response
     {
         return $this->render('accueil.html.twig', [
+            'message' => 'Bienvenue sur la page d\'accueil !',
+        ]);
+    }
+
+    #[Route('/formpart', name: 'formpart')]
+    public function formpart(): Response
+    {
+        return $this->render('formpart.html.twig', [
+            'message' => 'Bienvenue sur la page d\'accueil !',
+        ]);
+    }
+
+    #[Route('/motdepasseoublie', name: 'motdepasseoublie')]
+    public function motdepasseoublie(): Response
+    {
+        return $this->render('motdepasseoublie.html.twig', [
             'message' => 'Bienvenue sur la page d\'accueil !',
         ]);
     }
@@ -49,7 +68,7 @@ class BlogController extends AbstractController
 
 
 
-    #[Route('/connexion', name: 'connexion')]
+    #[Route('/pageconnexion', name: 'pageconnexion')]
     public function Connexion(): Response
     {
         return $this->render('connexion.html.twig', [
@@ -59,7 +78,7 @@ class BlogController extends AbstractController
 
     
     #[Route('/formpro', name: 'page_formpro')]
-    public function client(Request $request, EntityManagerInterface $entityManager): Response
+    public function clientpro(Request $request, EntityManagerInterface $entityManager): Response
     {
         if ($request->isMethod('POST')) {
             $nom = $request->request->get('nom');
@@ -108,6 +127,56 @@ class BlogController extends AbstractController
         // Si la méthode est GET, renvoyer simplement le template
         return $this->render('formpro.html.twig');
     }
+
+    #[Route('/formpart', name: 'formpart')]
+    public function clientpart(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        if ($request->isMethod('POST')) {
+            $nom = $request->request->get('nom');
+            $prenom = $request->request->get('prenom');
+            
+            $telephone = $request->request->get('telephone');
+            $email = $request->request->get('email');
+            $motdepasse = $request->request->get('motdepasse');
+
+            // Vérifier si le champ "telephone" est vide
+            if (empty($telephone)) {
+                // Gérer le cas où le champ "telephone" est vide
+                $this->addFlash('error', 'Le champ téléphone ne peut pas être vide.');
+                return $this->redirectToRoute('page_formpro');
+            }
+
+            // Créer une instance de l'entité Client
+            $client = new Client();
+            $client->setNom($nom);
+            $client->setPrenom($prenom);
+            $client->setTelephone($telephone);
+            $client->setEmail($email);
+            $client->setMotdepasse($motdepasse);
+
+            // Créer une instance de l'entité Societe
+            
+
+            // Persister les entités et enregistrer dans la base de données
+            $entityManager->persist($client);
+        
+            $entityManager->flush();
+
+            // Ajouter un message flash
+            $this->addFlash('success', 'Les données ont été créées avec succès !');
+
+            // Rediriger l'utilisateur vers une autre page après l'ajout
+            return $this->redirectToRoute('formpart');
+        }
+
+        // Si la méthode est GET, renvoyer simplement le template
+        return $this->render('formpart.html.twig');
+    }
+
+   
+
+
+
 
     
 
@@ -379,6 +448,40 @@ public function affichagelistedenvie(EntityManagerInterface $entityManager): Res
         'listedenvies' => $listedenvies,
     ]);
 }
+
+
+
+#[Route('/connexion', name: 'connexion')]
+public function seconnecter(Request $request): Response
+{
+    // Vérifier si la requête est de type POST
+    if ($request->isMethod('POST')) {
+        // Récupérer les données du formulaire
+        $email = $request->request->get('email');
+        $motdepasse = $request->request->get('motdepasse');
+
+        // Rechercher l'utilisateur dans la base de données par son email
+        $client = $this->entityManager->getRepository(Client::class)->findOneBy(['email' => $email]);
+
+        // Vérifier si l'utilisateur existe et si le mot de passe est correct
+        if (!$client || $motdepasse !== $client->getmotdepasse()) {
+            // Rediriger l'utilisateur vers une page d'erreur ou de connexion échouée
+            $this->addFlash('error', 'Adresse e-mail ou mot de passe incorrect.');
+            return $this->redirectToRoute('pageconnexion');
+        }
+
+        // Si les informations sont correctes, vous pouvez rediriger l'utilisateur vers la page de compte
+        return $this->redirectToRoute('compte');
+    }
+
+    // Si la méthode n'est pas POST, renvoyer une redirection vers la page de connexion
+    return $this->redirectToRoute('pageconnexion');
+}
+
+
+
+
+
 
 }
 

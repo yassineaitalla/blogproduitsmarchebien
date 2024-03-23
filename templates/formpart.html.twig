@@ -10,7 +10,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Client Professionnel</title>
+    <title>Client Particulier</title>
     <link rel="stylesheet" href="{{ asset('templates/style.css') }}">
 </head>
 
@@ -18,13 +18,24 @@
 
   <div class="container my-5">
       <div class="container bg-primary p-5 rounded">
-          <h1 class="text-center text-light">Client Professionnel</h1>
-          
-          <form method="post" action="{{ path('page_formpro') }}">
+          <h1 class="text-center text-light">Client Particulier</h1>
+
+          <form method="post">
+            <div class="mb-3">
+                <label for="civilite" class="form-label text-light">Civilité</label>
+                
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" id="civilite_m" name="civilite" value="M">
+                    <label class="form-check-label text-light" for="civilite_m">M.</label>
+                </div>
             
-              
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" id="civilite_mme" name="civilite" value="Mme">
+                    <label class="form-check-label text-light" for="civilite_mme">Mme</label>
+                </div>
+            </div>
             
-           
+
               <div class="mb-3">
                   <label for="nom" class="form-label text-light">Nom</label>
                   <input type="text" name="nom" class="form-control" id="nom" placeholder="Veuillez saisir votre nom" required>
@@ -35,23 +46,17 @@
                   <input type="text" name="prenom" class="form-control" id="prenom" placeholder="Veuillez saisir votre prénom" required>
               </div>
 
-
+              <div class="mb-3">
+                <label for="telephone" class="form-label text-light">Téléphone</label>
+                <input type="tel" name="telephone" class="form-control" id="telephone" placeholder="Veuillez saisir votre numéro de téléphone" required>
+            </div>
 
               <div class="mb-3">
-                <label for="telephone" class="form-label text-light">telephone</label>
-                <input type="text" name="telephone" class="form-control" id="telephone" placeholder="Veuillez saisir votre telephone" required>
-            </div>
+                  <label for="email" class="form-label text-light">E-mail</label>
+                  <input type="email" name="email" class="form-control" id="email" placeholder="Veuillez saisir votre adresse mail" required>
+              </div>
 
-            <div class="mb-3">
-                <label for="email" class="form-label text-light">email</label>
-                <input type="email" name="email" class="form-control" id="email" placeholder="Veuillez saisir votre email" required>
-            </div>
-
-            
-
-            
-
-            <div class="mb-3">
+              <div class="mb-3">
                 <label for="motdepasse" class="form-label text-light">Mot de passe</label>
                 <div class="input-group">
                     <input type="password" name="motdepasse" class="form-control" id="motdepasse" placeholder="Veuillez saisir votre mot de passe" required>
@@ -69,45 +74,12 @@
                     this.textContent = type === 'password' ? 'Afficher' : 'Cacher';
                 });
             </script>
-            
 
-            
+              
 
+              
 
-
-              <div class="mb-3">
-                <label for="societe" class="form-label text-light">societe</label>
-                <input type="text" name="societe" class="form-control" id="societe" placeholder="Veuillez saisir votre societe" required>
-            </div>
-
-            <div class="mb-3">
-                <label for="siret" class="form-label text-light">siret</label>
-                <input type="text" name="siret" class="form-control" id="siret" placeholder="Veuillez saisir votre siret" required>
-            </div>
-
-            
-               <!-- 
-              <div class="mb-3">
-                  <label for="telephone" class="form-label text-light">Téléphone</label>
-                  <input type="tel" name="telephone" class="form-control" id="telephone" placeholder="Veuillez saisir votre numéro de téléphone" required>
-              </div>
-
-              <div class="mb-3">
-                  <label for="adresse" class="form-label text-light">Adresse</label>
-                  <input type="adresse" name="adresse" class="form-control" placeholder="Veuillez saisir votre adresse" required>
-              </div>
-
-              <div class="mb-3">
-                <label for="email" class="form-label text-light">E-mail</label>
-                <input type="email" name="email" class="form-control" id="email" placeholder="Veuillez saisir votre adresse mail" required>
-            </div>
-
-            <div class="mb-3">
-                <label for="motdepasse" class="form-label text-light">Mot de passe</label>
-                <input type="motdepasse" name="motdepasse" class="form-control" id="motdepasse" placeholder="Veuillez saisir votre mot de passe" required>
-            </div>
-             -->
-
+              
 
               <div class="mb-3 text-end">
                   <button type="submit" class="btn btn-light">Enregistrer</button>
