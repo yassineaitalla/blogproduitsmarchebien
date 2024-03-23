@@ -24,7 +24,7 @@ class Client
 
 
     #[ORM\Column(length: 255)]
-    private ?string $telephone ;
+    private string $telephone ;
 
     public function settelephone(string $telephone): self
     {
@@ -33,7 +33,7 @@ class Client
         return $this;
     }
 
-    public function gettelephone(): ?string
+    public function gettelephone(): string
     {
         return $this->telephone;
     }
@@ -50,7 +50,7 @@ class Client
         return $this;
     }
 
-    public function getemail(): ?string
+    public function getemail(): string
     {
         return $this->email;
     }
@@ -67,7 +67,7 @@ class Client
         return $this;
     }
 
-    public function getmotdepasse(): ?string
+    public function getmotdepasse(): string
     {
         return $this->motdepasse;
     }
