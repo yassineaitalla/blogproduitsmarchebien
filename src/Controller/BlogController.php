@@ -489,33 +489,24 @@ public function seconnecter(Request $request, EntityManagerInterface $entityMana
 
 
 
-#[Route('/informations', name: 'recup_informations')]
-public function getClientInfo(Request $request, EntityManagerInterface $entityManager): Response
-{
-    // Récupérer l'ID du client depuis les paramètres de la requête
-    $clientId = $request->query->get('id');
 
-    // Vérifier si l'ID du client est fourni
-    if (!$clientId) {
-        // Gérer le cas où l'ID du client n'est pas fourni
-        return $this->redirectToRoute('pageconnexion');
+
+#[Route('/informations2', name: 'informations2')]
+public function informations(EntityManagerInterface $entityManager): Response
+    {
+        // Récupérer le repository de l'entité Client
+        $clientRepository = $entityManager->getRepository(Client::class);
+
+        // Récupérer tous les clients
+        $clients = $clientRepository->findAll();
+
+        // Transmettre les données à informations.html.twig pour l'affichage
+        return $this->render('informations2.html.twig', [
+            'clients' => $clients,
+        ]);
     }
 
-    // Récupérer les informations du client depuis la base de données en utilisant son ID
-    $clientRepository = $entityManager->getRepository(Client::class);
-    $client = $clientRepository->find($clientId);
 
-    // Vérifier si le client existe
-    if (!$client) {
-        // Gérer le cas où le client n'existe pas
-        throw $this->createNotFoundException('Client non trouvé.');
-    }
-
-    // Transmettre les informations du client au template Twig
-    return $this->render('informations.html.twig', [
-        'client' => $client
-    ]);
-}
 
 
 
