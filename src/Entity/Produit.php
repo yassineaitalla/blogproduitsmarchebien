@@ -25,6 +25,9 @@ class Produit
     private ?float $prix = null;
 
     #[ORM\Column]
+    private ?float $coef = null;
+
+    #[ORM\Column]
     private ?float $Longueur = null;
 
     #[ORM\Column]
@@ -73,14 +76,17 @@ class Produit
     // Description 
 
     
+    public function getcoef(): ?float
+    {
+        return $this->coef;
+    }
 
+    public function setcoef(float $coef): static
+    {
+        $this->coef = $coef;
 
-
-
-
-
-
-
+        return $this;
+    }
 
 
 
@@ -109,6 +115,10 @@ class Produit
 
         return $this;
     }
+
+
+
+  
 
     public function getnombredecoupe(): ?float
     {
