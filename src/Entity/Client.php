@@ -7,9 +7,10 @@ use App\Repository\ClientRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: ClientRepository::class)]
-class Client
+class Client 
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -120,22 +121,7 @@ class Client
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+   
 
 
 
@@ -146,6 +132,14 @@ class Client
     {
         return $this->id;
     }
+
+    public function setId(int $id): self
+    {
+        $this->id = $id;
+    
+        return $this;
+    }
+
 
     public function getNom(): ?string
     {

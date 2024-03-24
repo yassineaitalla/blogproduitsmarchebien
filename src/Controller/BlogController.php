@@ -42,6 +42,14 @@ class BlogController extends AbstractController
         ]);
     }
 
+    #[Route('/informations', name: 'informations')]
+    public function pageinformations(): Response
+    {
+        return $this->render('informations.html.twig', [
+            'message' => 'Bienvenue sur la page d\'accueil !',
+        ]);
+    }
+
     #[Route('/motdepasseoublie', name: 'motdepasseoublie')]
     public function motdepasseoublie(): Response
     {
@@ -452,7 +460,7 @@ public function affichagelistedenvie(EntityManagerInterface $entityManager): Res
 
 
 #[Route('/connexion', name: 'connexion')]
-public function seconnecter(Request $request): Response
+public function seconnecter(Request $request, EntityManagerInterface $entityManager): Response
 {
     // Vérifier si la requête est de type POST
     if ($request->isMethod('POST')) {
@@ -461,17 +469,18 @@ public function seconnecter(Request $request): Response
         $motdepasse = $request->request->get('motdepasse');
 
         // Rechercher l'utilisateur dans la base de données par son email
-        $client = $this->entityManager->getRepository(Client::class)->findOneBy(['email' => $email]);
+        $client = $entityManager->getRepository(Client::class)->findOneBy(['email' => $email]);
 
         // Vérifier si l'utilisateur existe et si le mot de passe est correct
-        if (!$client || $motdepasse !== $client->getmotdepasse()) {
+        if (!$client || $motdepasse !== $client->getMotdepasse()) {
             // Rediriger l'utilisateur vers une page d'erreur ou de connexion échouée
             $this->addFlash('error', 'Adresse e-mail ou mot de passe incorrect.');
             return $this->redirectToRoute('pageconnexion');
         }
 
         // Si les informations sont correctes, vous pouvez rediriger l'utilisateur vers la page de compte
-        return $this->redirectToRoute('compte');
+        // et envoyer les informations du client à la page informations.html.twig
+        return $this->redirectToRoute('recup_informations', ['id' => $client->getId()]);
     }
 
     // Si la méthode n'est pas POST, renvoyer une redirection vers la page de connexion
@@ -480,10 +489,42 @@ public function seconnecter(Request $request): Response
 
 
 
+#[Route('/informations', name: 'recup_informations')]
+public function getClientInfo(Request $request, EntityManagerInterface $entityManager): Response
+{
+    // Récupérer l'ID du client depuis les paramètres de la requête
+    $clientId = $request->query->get('id');
+
+    // Vérifier si l'ID du client est fourni
+    if (!$clientId) {
+        // Gérer le cas où l'ID du client n'est pas fourni
+        return $this->redirectToRoute('pageconnexion');
+    }
+
+    // Récupérer les informations du client depuis la base de données en utilisant son ID
+    $clientRepository = $entityManager->getRepository(Client::class);
+    $client = $clientRepository->find($clientId);
+
+    // Vérifier si le client existe
+    if (!$client) {
+        // Gérer le cas où le client n'existe pas
+        throw $this->createNotFoundException('Client non trouvé.');
+    }
+
+    // Transmettre les informations du client au template Twig
+    return $this->render('informations.html.twig', [
+        'client' => $client
+    ]);
+}
 
 
 
 }
+
+
+
+
+
 
 
 

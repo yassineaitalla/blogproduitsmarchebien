@@ -17,7 +17,7 @@
 </head>
 <body>
     <!-- Inclure la barre de navigation -->
-    {% include 'navbar.html.twig' %}
+    {% include 'navbar2.html.twig' %}
 
     <div class="container mt-5">
         <!-- Contenu de la page -->
@@ -25,7 +25,7 @@
             <div class="col-md-6">
                 <h3>Informations Client <i class="fas fa-info-circle"></i></h3>
                 <ul class="list-group">
-                    <li class="list-group-item"><i class="fas fa-info-circle mr-2"></i> <a href="#">Informations</a></li>
+                    <li class="list-group-item"><i class="fas fa-info-circle mr-2"></i> <a href="{{ path('informations') }}">Informations</a></li>
                     <li class="list-group-item"><i class="fas fa-list-ul mr-2"></i> <a href="#">Mes Listes d'Envies</a></li>
                     <li class="list-group-item"><i class="fas fa-history mr-2"></i> <a href="#">Historique de ses Commandes</a></li>
                     <li class="list-group-item"><i class="fas fa-file-invoice mr-2"></i> <a href="#">Factures</a></li>
