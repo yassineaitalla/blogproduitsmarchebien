@@ -3,31 +3,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Informations Clients</title>
+    <title>Informations du Client</title>
 </head>
 <body>
-    <h1>Informations Clients</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nom</th>
-                <th>Email</th>
-                <th>Téléphone</th>
-                <!-- Ajoutez d'autres colonnes au besoin -->
-            </tr>
-        </thead>
-        <tbody>
-            {% for client in clients %}
-            <tr>
-                <td>{{ client.id }}</td>
-                <td>{{ client.nom }}</td>
-                <td>{{ client.email }}</td>
-                <td>{{ client.telephone }}</td>
-                <!-- Ajoutez d'autres colonnes au besoin -->
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <h1>Informations du Client</h1>
+    <p><strong>Nom:</strong> {{ nom }}</p>
+    <p><strong>Prénom:</strong> {{ prenom }}</p>
+    <p><strong>Email:</strong> {{ email }}</p>
+    <p><strong>Téléphone:</strong> {{ telephone }}</p>
+    <p><strong>Mot de passe:</strong> {{ motdepasse }}</p>
 </body>
 </html>
