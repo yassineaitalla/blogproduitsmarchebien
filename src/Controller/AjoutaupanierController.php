@@ -50,21 +50,21 @@ class AjoutaupanierController extends AbstractController
             // Redirection vers une page d'erreur ou affichage d'un message d'erreur
         }
 
-    
+        
     
         // Vérifier si le produit existe déjà dans le panier
         $panierExistant = $this->entityManager->getRepository(Panier::class)->findOneBy(['id_produit' => $produit]);
     
         // Récupérer la quantité saisie par l'utilisateur
         $quantite = $request->request->get('quantite');
-    
-        // Vérifier si la quantité est définie et non vide
-        if ($quantite !== null && $quantite !== '') {
-            $quantite = intval($quantite); // Convertir en entier
-        } else {
-            // Si la quantité n'est pas définie ou vide, mettre la quantité par défaut à 1
-            $quantite = 1;
-        }
+
+// Vérifier si la quantité est définie et non vide
+if ($quantite !== null && $quantite !== '') {
+    $quantite = intval($quantite); // Convertir en entier
+} else {
+    // Si la quantité n'est pas définie ou vide, mettre la quantité par défaut à 1
+    $quantite = 1;
+}
     
         // Si le produit n'est pas déjà dans le panier, l'ajouter
         if (!$panierExistant) {
@@ -78,7 +78,7 @@ class AjoutaupanierController extends AbstractController
                 // Appliquer la remise au total
                 $total = $total - $remise;
             }
-            $quantite = $request->request->get('id');
+            $quantite = $request->request->get('quantite');
             $client = $this->entityManager->getRepository(Client::class)->find("3");
             // Si le produit n'existe pas, rediriger vers une page d'erreur ou afficher un message d'erreur
              if (!$client) {
@@ -98,6 +98,9 @@ class AjoutaupanierController extends AbstractController
             $panier->setQuantite($quantite);
 
             $panier->setClient($client);
+
+            
+       
             // Persister le panier
             $this->entityManager->persist($panier);
         } else {
@@ -124,13 +127,12 @@ class AjoutaupanierController extends AbstractController
         return $this->redirectToRoute('produits');
     }
     
+
+
+
+
+
 }
-
-
-
-
-
-
 
 
 
