@@ -1,10 +1,12 @@
 {# templates/informations.html.twig #}
 
+{% include 'navbar.html.twig' %} 
+
 <!DOCTYPE html>
 <html>
 <head>
     <title>Informations du Clientt
-        
+
     </title>
 </head>
 <body>
@@ -15,4 +17,6 @@
     <p><strong>Téléphone:</strong> {{ telephone }}</p>
     <p><strong>Mot de passe:</strong> {{ motdepasse }}</p>
 </body>
+
+<button class="btn-outline-secondary" style="margin-left: 500px;">Deconexion </button>
 </html>

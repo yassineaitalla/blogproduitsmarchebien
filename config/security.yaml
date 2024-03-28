@@ -1,0 +1,23 @@
+security:
+    encoders:
+        App\Entity\Client:
+            algorithm: bcrypt
+
+    providers:
+        database_clients:
+            entity:
+                class: App\Entity\Client
+                property: email
+
+    firewalls:
+        main:
+            pattern: ^/
+            anonymous: true
+            provider: database_clients
+            form_login:
+                login_path: login
+                check_path: login
+
+    access_control:
+        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/, roles: ROLE_USER }

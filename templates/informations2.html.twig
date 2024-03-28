@@ -1,33 +1,62 @@
-{# templates/informations.html.twig #}
-
 <!DOCTYPE html>
-<html>
+
+ 
+<html lang="en">
 <head>
-    <title>Informations Clients</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Informations Client</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-p7+U7mOwVSds99rtGW4P5Rkdf5LQXTT9Cm0ZqL4i/ZU5/3NxGdWpZlpGoMlg9Y2HJcDL2VnJpfqMJNMGbu8ClA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
-    <h1>Informations Clients</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nom</th>
-                <th>Email</th>
-                <th>Téléphone</th>
-                <!-- Ajoutez d'autres colonnes au besoin -->
-            </tr>
-        </thead>
-        <tbody>
-            {% for client in client %}
-            <tr>
-                <td>{{ client.id }}</td>
-                <td>{{ client.nom }}</td>
-                <td>{{ client.email }}</td>
-                <td>{{ client.telephone }}</td>
-                <!-- Ajoutez d'autres colonnes au besoin -->
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    {% include 'navbar.html.twig' %}
+
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-3">
+        <a href="{{ path('informations') }}" class="card-link">
+          <div class="card">
+            <div class="card-body text-center">
+              <i class="fas fa-user fa-3x mb-3"></i>
+              <h5 class="card-title">Informations Client</h5>
+            </div>
+          </div>
+        </a>
+      </div>      
+    <div class="col-md-3">
+      <div class="card">
+        <div class="card-body text-center">
+          <i class="fas fa-heart fa-3x mb-3"></i>
+          <h5 class="card-title">Liste d'envies</h5>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card">
+        <div class="card-body text-center">
+          <i class="fas fa-shopping-basket fa-3x mb-3"></i>
+          <h5 class="card-title">Panier</h5>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card">
+        <div class="card-body text-center">
+          <i class="fas fa-file-invoice-dollar fa-3x mb-3"></i>
+          <h5 class="card-title">Factures</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- jQuery and Bootstrap JS -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 </body>
 </html>

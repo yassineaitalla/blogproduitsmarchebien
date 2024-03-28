@@ -1,0 +1,29 @@
+{# templates/security/login.html.twig #}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion</title>
+</head>
+<body>
+    <h2>Connexion</h2>
+
+    {% if error %}
+        <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+    {% endif %}
+
+    <form method="post">
+        <label for="email">Email:</label><br>
+        <input type="email" id="email" name="_username" required><br>
+
+        <label for="password">Mot de passe:</label><br>
+        <input type="password" id="password" name="_password" required><br>
+
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+        <button type="submit">Connexion</button>
+    </form>
+</body>
+</html>

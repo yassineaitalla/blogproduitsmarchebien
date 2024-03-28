@@ -1,20 +1,19 @@
 <?php
-// nvx
 
 namespace App\Entity;
 
 use App\Repository\ClientRepository;
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ClientRepository::class)]
-class Client 
+class Client implements UserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(type: "integer")]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
@@ -23,67 +22,93 @@ class Client
     #[ORM\Column(length: 255)]
     private ?string $prenom = null;
 
+    #[ORM\Column(length: 255)]
+    private string $telephone;
 
     #[ORM\Column(length: 255)]
-    private string $telephone ;
+    private ?string $email;
 
-    public function settelephone(string $telephone): self
+    #[ORM\Column(length: 255)]
+    private ?string $motdepasse;
+
+    #[ORM\OneToMany(targetEntity: Societe::class, mappedBy: "client")]
+    private $societes;
+
+    public function __construct()
+    {
+        $this->societes = new ArrayCollection();
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function setId(int $id): self
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    public function getNom(): ?string
+    {
+        return $this->nom;
+    }
+
+    public function setNom(string $nom): self
+    {
+        $this->nom = $nom;
+
+        return $this;
+    }
+
+    public function getPrenom(): ?string
+    {
+        return $this->prenom;
+    }
+
+    public function setPrenom(string $prenom): self
+    {
+        $this->prenom = $prenom;
+
+        return $this;
+    }
+
+    public function getTelephone(): ?string
+    {
+        return $this->telephone;
+    }
+
+    public function setTelephone(string $telephone): self
     {
         $this->telephone = $telephone;
 
         return $this;
     }
 
-    public function gettelephone(): string
+    public function getEmail(): ?string
     {
-        return $this->telephone;
+        return $this->email;
     }
-//
 
-
-    #[ORM\Column(length: 255)]
-    private ?string $email ;
-
-    public function setemail(string $email): self
+    public function setEmail(string $email): self
     {
         $this->email = $email;
 
         return $this;
     }
 
-    public function getemail(): string
-    {
-        return $this->email;
-    }
-
-    //
-
-    #[ORM\Column(length: 255)]
-    private ?string $motdepasse ;
-
-    public function setmotdepasse(string $motdepasse): self
-    {
-        $this->motdepasse = $motdepasse;
-
-        return $this;
-    }
-
-    public function getmotdepasse(): string
+    public function getMotdepasse(): ?string
     {
         return $this->motdepasse;
     }
 
-
-    //
-
-
-    #[ORM\OneToMany(targetEntity:Societe::class, mappedBy:"client")]
-     
-    private $societes;
-
-    public function __construct()
+    public function setMotdepasse(string $motdepasse): self
     {
-        $this->societes = new ArrayCollection();
+        $this->motdepasse = $motdepasse;
+
+        return $this;
     }
 
     /**
@@ -116,55 +141,37 @@ class Client
         return $this;
     }
 
-    
+    // Implémentation des méthodes de l'interface UserInterface
 
-
-
-
-   
-
-
-
-
-
-
-    public function getId(): ?int
+    public function getUsername(): string
     {
-        return $this->id;
+        return (string) $this->email;
     }
 
-    public function setId(int $id): self
+    public function getRoles(): array
     {
-        $this->id = $id;
-    
-        return $this;
+        // Définissez les rôles de l'utilisateur ici, par exemple ['ROLE_USER']
+        return ['ROLE_USER'];
     }
 
-
-    public function getNom(): ?string
+    public function getPassword(): string
     {
-        return $this->nom;
+        return (string) $this->motdepasse;
     }
 
-    public function setNom(string $nom): static
+    public function getSalt()
     {
-        $this->nom = $nom;
-
-        return $this;
+        // Vous n'avez pas besoin de sel car bcrypt gère cela automatiquement
     }
 
-    public function getPrenom(): ?string
+    public function eraseCredentials(): void
+{
+    // Si vous stockez des données sensibles dans cet objet, nettoyez-les ici
+    // Cette méthode est nécessaire car UserInterface l'exige
+}
+
+    public function getUserIdentifier(): string
     {
-        return $this->prenom;
+        return (string) $this->email;
     }
-
-    public function setPrenom(string $prenom): static
-    {
-        $this->prenom = $prenom;
-
-        return $this;
-    }
-
-
-
 }
