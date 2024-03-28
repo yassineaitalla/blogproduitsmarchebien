@@ -37,7 +37,8 @@ public function seconnecter(Request $request, EntityManagerInterface $entityMana
         return $this->redirectToRoute('recup_informations', ['id' => $client->getId()]);
     }
 
-    // Si la méthode n'est pas POST, afficher la page de connexion
+    // Si la méthode n'est pas POST, afficher la page de connexionn
+    
     return $this->render('connexion.html.twig');
 }
 }
