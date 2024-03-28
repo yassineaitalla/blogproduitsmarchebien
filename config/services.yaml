@@ -31,4 +31,6 @@ services:
 parameters:
     dossier_images: '%kernel.project_dir%/public/images'
 
+    
+
 
