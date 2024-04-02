@@ -34,7 +34,7 @@ class AjoutaupanierController extends AbstractController
 
     
 
-    #[Route("/ajouter-au-panier/{id}", name:"ajouter_au_panier")]
+    #[Route("/ajouter-au-panier/{id}", name:"ajouter_au_panier", )]
     public function ajouterAuPanier(Request $request, $id, SessionInterface $session,): Response
     {
         // Récupérer le produit à partir de son identifiant

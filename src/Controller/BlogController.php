@@ -141,7 +141,7 @@ class BlogController extends AbstractController
         return $this->render('formpro.html.twig');
     }
 
-    #[Route('/formpart', name: 'formpart')]
+    #[Route('/formpart', name: 'formpart' ,methods:['POST'])]
     public function clientpart(Request $request, EntityManagerInterface $entityManager): Response
     {
         if ($request->isMethod('POST')) {
@@ -190,8 +190,6 @@ class BlogController extends AbstractController
 
 
 
-
-    
 
     
 
