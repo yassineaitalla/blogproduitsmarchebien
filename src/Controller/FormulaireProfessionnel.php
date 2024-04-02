@@ -1,0 +1,68 @@
+<?php
+
+namespace App\Controller;
+use App\Entity\Client;
+use App\Entity\Societe;
+
+use Symfony\Component\HttpFoundation\Request;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;  // Importe la classe Route de l'attribut Route.
+
+class FormulaireProfessionnel extends AbstractController
+{
+
+
+#[Route('/formpro', name: 'page_formpro')]
+    public function clientpro(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        if ($request->isMethod('POST')) {
+            $nom = $request->request->get('nom');
+            $prenom = $request->request->get('prenom');
+            $nomSociete = $request->request->get('societe');
+            $siret = $request->request->get('siret');
+            $telephone = $request->request->get('telephone');
+            $email = $request->request->get('email');
+            $motdepasse = $request->request->get('motdepasse');
+
+            // Vérifier si le champ "telephone" est vide
+            if (empty($telephone)) {
+                // Gérer le cas où le champ "telephone" est vide
+                $this->addFlash('error', 'Le champ téléphone ne peut pas être vide.');
+                return $this->redirectToRoute('page_formpro');
+            }
+
+            // Créer une instance de l'entité Client
+            $client = new Client();
+            $client->setNom($nom);
+            $client->setPrenom($prenom);
+            $client->setTelephone($telephone);
+            $client->setEmail($email);
+            $client->setMotdepasse($motdepasse);
+
+            // Créer une instance de l'entité Societe
+            $societe = new Societe();
+            $societe->setNomSociete($nomSociete);
+            $societe->setSiret($siret);
+
+            // Associer le client à la société (ajustez cela en fonction de votre relation)
+            $societe->setClient($client);
+
+            // Persister les entités et enregistrer dans la base de données
+            $entityManager->persist($client);
+            $entityManager->persist($societe);
+            $entityManager->flush();
+
+            // Ajouter un message flash
+            $this->addFlash('success', 'Les données ont été créées avec succès !');
+
+            // Rediriger l'utilisateur vers une autre page après l'ajout
+            return $this->redirectToRoute('page_formpro');
+        }
+
+        // Si la méthode est GET, renvoyer simplement le template
+        return $this->render('formpro.html.twig');
+    }
+
+}
