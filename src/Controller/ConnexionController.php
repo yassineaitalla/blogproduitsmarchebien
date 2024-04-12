@@ -41,4 +41,33 @@ public function seconnecter(Request $request, EntityManagerInterface $entityMana
     
     return $this->render('connexion.html.twig');
 }
+
+    #[Route('/navbar', name: 'verification')]
+    public function verificationConnexion(SessionInterface $session): Response
+    {
+        // Vérifions si l'utilisateur est connecté en vérifiant la présence de son ID dans la session
+        $clientId = $session->get('client_id');
+
+        if ($clientId) {
+            // Si l'utilisateur est connecté, redirigeons vers la page d'informations
+            return $this->redirectToRoute('test');
+        } else {
+            // Si l'utilisateur n'est pas connecté, redirigeons vers la page de connexion
+            return $this->redirectToRoute('pageconnexion');
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
