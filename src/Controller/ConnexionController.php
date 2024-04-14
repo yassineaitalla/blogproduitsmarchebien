@@ -71,7 +71,7 @@ public function seconnecter(Request $request, EntityManagerInterface $entityMana
         // Supprimer l'ID du client de la session
         $session->remove('client_id');
 
-        // Rediriger l'utilisateur vers une page de confirmation de déconnexion ou toute autre page appropriée
+        // Rediriger l'utilisateur vers une page de confirmation de déconnexion ou toute autre page appropriéeee
         return $this->redirectToRoute('pageconnexion');
     }
 
