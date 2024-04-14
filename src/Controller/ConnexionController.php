@@ -42,25 +42,38 @@ public function seconnecter(Request $request, EntityManagerInterface $entityMana
     return $this->render('connexion.html.twig');
 }
 
-    #[Route('/navbar', name: 'verification')]
+
+
+    #[Route('/test5', name: 'verification')]
     public function verificationConnexion(SessionInterface $session): Response
-    {
-        // Vérifions si l'utilisateur est connecté en vérifiant la présence de son ID dans la session
-        $clientId = $session->get('client_id');
+{
+    // Vérifions si l'utilisateur est connecté en vérifiant la présence de son ID dans la session
+    $clientId = $session->get('client_id');
 
-        if ($clientId) {
-            // Si l'utilisateur est connecté, redirigeons vers la page d'informations
-            return $this->redirectToRoute('test');
-        } else {
-            // Si l'utilisateur n'est pas connecté, redirigeons vers la page de connexion
-            return $this->redirectToRoute('pageconnexion');
-        }
+    if ($clientId) {
+        // Si l'utilisateur est connecté, redirigeons vers la page de récupération des informations
+        return $this->redirectToRoute('recup_informations', ['id' => $clientId]);
+    } else {
+        // Si l'utilisateur n'est pas connecté, redirigeons vers la page de connexion
+        return $this->redirectToRoute('pageconnexion');
     }
+}
 
 
 
 
 
+
+
+#[Route('/deconnexion', name: 'deconnexion')]
+    public function deconnexion(SessionInterface $session): Response
+    {
+        // Supprimer l'ID du client de la session
+        $session->remove('client_id');
+
+        // Rediriger l'utilisateur vers une page de confirmation de déconnexion ou toute autre page appropriée
+        return $this->redirectToRoute('pageconnexion');
+    }
 
 
 

@@ -29,6 +29,7 @@ class FormulaireParticulier extends AbstractController
             $telephone = $request->request->get('telephone');
             $email = $request->request->get('email');
             $motdepasse = $request->request->get('motdepasse');
+            $typeclient = $request->request->get('typeclient');
 
             // Vérifier si le champ "telephone" est vide
             if (empty($telephone)) {
@@ -44,6 +45,7 @@ class FormulaireParticulier extends AbstractController
             $client->setTelephone($telephone);
             $client->setEmail($email);
             $client->setMotdepasse($motdepasse);
+            $client->settypeclient($typeclient);
 
             // Créer une instance de l'entité Societe
             

@@ -28,6 +28,8 @@ class Client implements UserInterface
     #[ORM\Column(length: 255)]
     private ?string $email;
 
+   
+
     #[ORM\Column(length: 255)]
     private ?string $motdepasse;
 
@@ -95,6 +97,21 @@ class Client implements UserInterface
     public function setEmail(string $email): self
     {
         $this->email = $email;
+
+        return $this;
+    }
+
+    #[ORM\Column(length: 255)]
+    private ?string $typeclient;
+
+    public function gettypeclient(): ?string
+    {
+        return $this->typeclient;
+    }
+
+    public function settypeclient(string $typeclient): self
+    {
+        $this->typeclient = $typeclient;
 
         return $this;
     }

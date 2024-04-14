@@ -25,6 +25,7 @@ class FormulaireProfessionnel extends AbstractController
             $telephone = $request->request->get('telephone');
             $email = $request->request->get('email');
             $motdepasse = $request->request->get('motdepasse');
+            $typeclient = $request->request->get('typeclientP');
 
             // Vérifier si le champ "telephone" est vide
             if (empty($telephone)) {
@@ -37,6 +38,7 @@ class FormulaireProfessionnel extends AbstractController
             $client = new Client();
             $client->setNom($nom);
             $client->setPrenom($prenom);
+            $client->settypeclient($typeclient);
             $client->setTelephone($telephone);
             $client->setEmail($email);
             $client->setMotdepasse($motdepasse);
