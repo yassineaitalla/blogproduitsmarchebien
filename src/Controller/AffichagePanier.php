@@ -49,7 +49,7 @@ public function affichagePanier(Request $request): Response
             $sommeTotal += $produit->getTotal();
         }
 
-        // Vérifier si le client est un professionnel pour afficher le bouton de demande de devis
+        // Vérifier si le client est un professionnel pour afficher le bouton de demande de deviss
         $afficherDevis = $client && $client->gettypeclient() === 'ClientProfessionnel';
     }
 
