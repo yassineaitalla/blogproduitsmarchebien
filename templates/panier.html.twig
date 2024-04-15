@@ -57,10 +57,10 @@
                     <button type="submit"  class="btn btn-primary" >Passer commande</button>
 
                  
-  
                     {% if afficherDevis %}
-    <button type="button" class="btn btn-primary">Demander un devis</button>
-{% endif %}
+                    <a href="{{ path('demanderdevis') }}" class="btn btn-primary">Demander un devis</a>
+                {% endif %}
+                
 
                 </div>
             </div>

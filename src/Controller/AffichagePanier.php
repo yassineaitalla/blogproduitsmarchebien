@@ -25,39 +25,40 @@ class AffichagePanier extends AbstractController{
     }
 
     #[Route('/affichagepanier', name: 'affichagepanier')]
-    public function affichagePanier(Request $request): Response
-    {
+public function affichagePanier(Request $request): Response
+{
+    // Récupérer l'ID de l'utilisateur connecté depuis la session
+    $clientId = $request->getSession()->get('client_id');
 
-        $panierRepository = $this->entityManager->getRepository(Panier::class);
-
-        // Obtenir tous les éléments du panier
-        $panier = $panierRepository->findAll();
-
-        // Calculer la somme totale de la colonne total
-        $query = $this->entityManager->createQuery(
-            'SELECT SUM(p.total) AS sommeTotal FROM App\Entity\Panier p'
-        );
-        $resultat = $query->getSingleScalarResult();
-        $sommeTotal = $resultat ? $resultat : 0;
-
-        $clientId = $request->getSession()->get('client_id');
-
+    // Si l'ID du client n'est pas défini, afficher un panier vide
+    if (!$clientId) {
+        $message = "Votre panier est vide. Aucun élément à afficher.";  
+        $sommeTotal = 0;
+        $afficherDevis = false;
+    } else {
         // Récupérer le client à partir de son ID
         $client = $this->entityManager->getRepository(Client::class)->find($clientId);
 
-        // Vérifier si le client existe et obtenir son type
-        $afficherDevis = false;
-        if ($client && $client->gettypeclient() === 'ClientProfessionnel') {
-            $afficherDevis = true;
+        // Récupérer tous les éléments du panier pour cet utilisateur
+        $panierRepository = $this->entityManager->getRepository(Panier::class);
+        $panier = $panierRepository->findBy(['client' => $client]);
+
+        // Calculer la somme totale des éléments du panier
+        $sommeTotal = 0;
+        foreach ($panier as $produit) {
+            $sommeTotal += $produit->getTotal();
         }
 
-        return $this->render('panier.html.twig', [
-            'panier' => $panier,
-            'sommeTotal' => $sommeTotal,
-            'afficherDevis' => $afficherDevis,
-        ]);
+        // Vérifier si le client est un professionnel pour afficher le bouton de demande de devis
+        $afficherDevis = $client && $client->gettypeclient() === 'ClientProfessionnel';
     }
 
+    return $this->render('panier.html.twig', [
+        'panier' => $panier,
+        'sommeTotal' => $sommeTotal,
+        'afficherDevis' => $afficherDevis,
+    ]);
+}
 
     
     }

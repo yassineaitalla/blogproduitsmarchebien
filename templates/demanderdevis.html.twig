@@ -1,0 +1,92 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demander devis</title>
+    <link rel="stylesheet" href="">
+</head>
+<body >
+
+    
+    <header>
+        {% include 'navbar.html.twig' %} 
+        
+    </header>
+
+
+<main>
+
+
+    <div class="mb-3">
+        <label for="message" class="form-label">Message</label>
+        <textarea class="form-control" id="message" name="message" rows="5"></textarea>
+    </div>
+
+    <a href="{{ path('demanderdevis') }}" class="btn btn-primary">Soumettre le devis</a>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+     
+    
+    <style> 
+       
+        body {
+            /*background-image: url("{{ asset('images/metal.jpg') }}");*/
+            background-size: cover; /* Ajustez cette propriété selon vos besoins */
+            background-position: center center; /* Ajustez cette propriété selon vos besoins */
+            background-repeat: no-repeat;
+            /* Ajoutez d'autres styles au besoin */
+        }
+        
+        
+       
+
+        /* Ajoutez d'autres styles CSS pour le contenu de la page */
+        
+    </style>
+        
+
+
+
+
+
+
+    <!-- Footer -->
+    <footer>
+        {% include 'footer.html.twig' %} 
+    </footer>
+    <!-- Footer -->
+    
+
+
+            
+    
+</body>
+
+
+
+
+    </html>
+
+
+
+
+
+
+
+
+
+
+   

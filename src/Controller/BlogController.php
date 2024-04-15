@@ -241,6 +241,8 @@ public function affichagelistedenvie(EntityManagerInterface $entityManager): Res
 
 
 
+
+
 #[Route('/auth', name: 'votre_route')]
     public function votreAction(TokenStorageInterface $tokenStorage): Response
     {
@@ -272,6 +274,12 @@ public function affichagelistedenvie(EntityManagerInterface $entityManager): Res
         return $this->render('connexionn.html.twig', [
             // Passer des données à votre vue Twig si nécessaire
         ]);
+    }
+
+    #[Route('/demanderdevis', name: 'demanderdevis')]
+    public function demanderDevis(): Response
+    {
+        return $this->render('demanderdevis.html.twig');
     }
 
 
