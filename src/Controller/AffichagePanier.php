@@ -32,7 +32,7 @@ public function affichagePanier(Request $request): Response
 
     // Si l'ID du client n'est pas défini, afficher un panier vide
     if (!$clientId) {
-        $message = "Votre panier est vide. Aucun élément à afficher.";  
+        $panier = [];
         $sommeTotal = 0;
         $afficherDevis = false;
     } else {
