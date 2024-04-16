@@ -48,14 +48,15 @@
   
   
   
-    
-
+    {% if app.session.get('client_id') %}
+    <a  class="btn btn-link">Ma liste d'envies</a>
+{% endif %}
 
         
         
     <div class="d-flex">
       <a href="{{ path('affichagepanier') }}" style="margin-right: 20px;">
-          <i class="bi bi-cart4" style="font-size: 24px; color: white;">Panier()</i>
+          <label class="bi bi-cart4" style="font-size: 24px; color: white;">Panier()</label>
       </a>
     </div>
   

@@ -8,7 +8,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Produits</title>
-        <link rel="stylesheet" href="{{ asset('templates/style.css') }}">
+        <link rel="stylesheet" href="{{ asset('styles/app.css') }}"> 
     </head>
 
     <body class="bg-dark">
@@ -26,30 +26,37 @@
                                 <h5 class="card-title">Remise de {{ produit.remise }} %</h5>
                               
                                 <p class="card-text">Prix du produit {{ produit.prix }} € ttc</p>
-                                <h6> Quantité
+                                
                                 
                                 </h6>
 
-                                <form action="{{ path('ajouter_au_panier', {'id': produit.id}) }}" method="post"> 
-                                    <input type="number" name="quantite" id="quantite" value="1" min="1" class="form-control">
-                                    <button type="submit" class="btn btn-primary">Ajouter au panier</button>
-                                  
-                                </form>
+                                {% if app.session.get('client_id') %}
+    <form action="{{ path('ajouter_au_panier', {'id': produit.id}) }}" method="post"> 
+        <input type="number" name="quantite" id="quantite" value="1" min="1" class="form-control">
+        <h6> Quantité
+            <div class="container mt-5">
+                <div class="row">
+                  <div class="col">
+                    <label for="longueur">Longueur (en cm) :</label>
+                    <input type="number" id="longueur" name="longueur" class="form-control" min="50" max="600" step="1">
+                  </div>
+                </div>
+              </div>
+        <button type="submit" class="btn btn-primary">Ajouter au panier</button>
+    </form>
 
-                                <form action="{{ path('ajouter_a_la_listedenvie', {'id': produit.id}) }}" method="post"> 
-                                 
-                                    
-                                    <button type="submit"  class="btn btn-primary" >Ajouter à la liste d'envies</button>
-                                </form>
+    <form action="{{ path('ajouter_a_la_listedenvie', {'id': produit.id}) }}" method="post"> 
+        <button type="submit" class="btn btn-primary">Ajouter à la liste d'envies</button>
+    </form>
+{% else %}
+    <p>Veuillez vous connecter pour ajouter des produits au panier et à la liste d'envies.</p>
+    <a href="{{ path('verification') }}" class="btn btn-primary">
+        <i ></i> Connexion
+    </a>
+    
+{% endif %}
 
-                                <div class="container mt-5">
-                                    <div class="row">
-                                      <div class="col">
-                                        <label for="longueur">Longueur (en cm) :</label>
-                                        <input type="number" id="longueur" name="longueur" class="form-control" min="50" max="600" step="1">
-                                      </div>
-                                    </div>
-                                  </div>
+                                
                                 
 
                             </div>
@@ -60,6 +67,25 @@
                 {% endfor %}
             </div>
         </div>
+
+
+        {% for message in app.flashes('success') %}
+    <div class="alert alert-success" role="alert">
+        {{ message }}
+    </div>
+{% endfor %}
+
+{% for message in app.flashes('error') %}
+    <div class="alert alert-danger" role="alert">
+        {{ message }}
+    </div>
+{% endfor %}
+
+<div style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+    {% for flashMessage in app.flashes('error') %}
+        <div>{{ flashMessag }}</div>
+    {% endfor %}
+</div>
 
         <footer>
             {% include 'footer.html.twig' %} 

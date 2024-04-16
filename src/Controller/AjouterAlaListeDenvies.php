@@ -32,30 +32,45 @@ class AjouterAlaListeDenvies extends AbstractController
     }
 
     #[Route("/ajouter-au-laliste/{id}", name:"ajouter_a_la_listedenvie")]
-    
-    public function ajouterAlalistedenvie(Request $request, $id , SessionInterface $session,): Response
+public function ajouterAlalistedenvie(Request $request, $id, SessionInterface  $session): Response
 {
     // Récupérer le produit à partir de son identifiant
     $produit = $this->entityManager->getRepository(Produit::class)->find($id);
 
     // Vérifier si le produit existe
     if (!$produit) {
-        // Redirection vers une page d'erreur ou affichage d'un message d'erreur
+        // Afficher un message d'erreur
+        $this->addFlash('error', 'Le produit n\'existe pas.');
+        return $this->redirectToRoute('produits');
     }
 
-    $clientId= $session->get('client_id');
-    
-    // Si l'ID du client n'est pas présent dans la session, rediriger vers une page d'erreur ou afficher un message d'erreur
-    if(!$clientId) {
-        // Redirection vers une page d'erreur ou affichage d'un message d'erreur
+    $clientId = $session->get('client_id');
+
+    // Si l'ID du client n'est pas présent dans la session, afficher un message d'erreur
+    if (!$clientId) {
+        // Afficher un message d'erreur
+        $this->addFlash('error', 'Identifiant client non trouvé.');
+        return $this->redirectToRoute('produits');
     }
 
-            $quantite = $request->request->get('quantite');
-            $client = $this->entityManager->getRepository(Client::class)->find($clientId);
-            // Si le produit n'existe pas, rediriger vers une page d'erreur ou afficher un message d'erreur
-             if (!$client) {
-                 // Redirection vers une page d'erreur ou affichage d'un message d'erreur
-             }
+    // Récupérer le client à partir de son identifiant
+    $client = $this->entityManager->getRepository(Client::class)->find($clientId);
+
+    // Si le client n'existe pas, afficher un message d'erreur
+    if (!$client) {
+        // Afficher un message d'erreur
+        $this->addFlash('error', 'Le client n\'existe pas.');
+        return $this->redirectToRoute('produits');
+    }
+
+    // Vérifier si le produit est déjà dans la liste d'envies du client
+    $existingList = $this->entityManager->getRepository(Listedenvies::class)->findOneBy(['idproduit' => $produit, 'client' => $client]);
+
+    // Si le produit existe déjà dans la liste d'envies du client, afficher un message d'erreur
+    if ($existingList) {
+        $this->addFlash('error', 'Ce produit est déjà dans votre liste d\'envies.');
+        return $this->redirectToRoute('produits');
+    }
 
     // Créer une nouvelle instance de Listedenvies
     $listedenvies = new Listedenvies();
@@ -68,7 +83,11 @@ class AjouterAlaListeDenvies extends AbstractController
     // Enregistrer les modifications dans la base de données
     $this->entityManager->flush();
 
-    // Rediriger l'utilisateur vers une page de confirmation ou à la page précédente
+    // Afficher un message de succès
+    $this->addFlash('success', 'Le produit a été ajouté à votre liste d\'envies.');
+
+    // Rediriger l'utilisateur vers la page précédente
     return $this->redirectToRoute('produits');
 }
+
 }

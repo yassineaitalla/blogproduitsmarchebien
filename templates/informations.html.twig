@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Informations du Clientt
+    <title>Mes informations
 
     </title>
 </head>
@@ -17,6 +17,18 @@
     <p><strong>Téléphone:</strong> {{ telephone }}</p>
     <p><strong>Mot de passe:</strong> {{ motdepasse }}</p>
 </body>
+
+<div class="col-md-6">
+    
+    <ul class="list-group">
+        
+        <li class="list-group-item"><i class="fas fa-list-ul mr-2"></i> <a href="#">Ma liste d'envie</a></li>
+        <li class="list-group-item"><i class="fas fa-history mr-2"></i> <a href="#">Historique de mes Commandes</a></li>
+        <li class="list-group-item"><i class="fas fa-file-invoice mr-2"></i> <a href="#">Mes Factures</a></li>
+        <li class="list-group-item"><i class="fas fa-search mr-2"></i> <a href="#">Consulter mes Devis</a></li>
+
+    </ul>
+</div>
 
 <a href="{{ path('deconnexion') }}" class="btn btn-outline-secondary" style="margin-left: 500px;">Déconnexion</a>
 

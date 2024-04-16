@@ -18,7 +18,7 @@
                                 
                                 <th scope="col">Produit</th>
                                 <th scope="col">Quantite</th>
-                                <th scope="col">Prix ( Remise de 10 %  ) </th>
+                                <th scope="col">Prix  </th>
                               
                             </tr>
                         </thead>
@@ -54,12 +54,27 @@
                         
                         
                     </table>
-                    <button type="submit"  class="btn btn-primary" >Passer commande</button>
+                    
 
                  
-                    {% if afficherDevis %}
-                    <a href="{{ path('demanderdevis') }}" class="btn btn-primary">Demander un devis</a>
+                    
+                {% if message is not empty %}
+    <p>{{ message }}</p>
+{% endif %}
+
+
+{% if afficherPasserCommande %}
+        <a  class="btn btn-primary">Passer commande</a>
+
+        <a  class="btn btn-primary">Vider le panier</a>
+
+        {% if afficherDevis %}
+                    <a href="{{ path('demanderdevis') }}" class="btn btn-primary" style="margin-left: 250px;">Demander un devis</a>
                 {% endif %}
+
+                
+
+    {% endif %}
                 
 
                 </div>
