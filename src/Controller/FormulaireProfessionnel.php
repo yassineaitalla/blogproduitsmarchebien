@@ -18,6 +18,7 @@ class FormulaireProfessionnel extends AbstractController
     public function clientpro(Request $request, EntityManagerInterface $entityManager): Response
     {
         if ($request->isMethod('POST')) {
+            $civilite = $request->request->get('civilite');
             $nom = $request->request->get('nom');
             $prenom = $request->request->get('prenom');
             $nomSociete = $request->request->get('societe');
@@ -36,6 +37,7 @@ class FormulaireProfessionnel extends AbstractController
 
             // Créer une instance de l'entité Client
             $client = new Client();
+            $client->setCivilite($civilite);
             $client->setNom($nom);
             $client->setPrenom($prenom);
             $client->settypeclient($typeclient);

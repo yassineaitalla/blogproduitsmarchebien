@@ -17,7 +17,10 @@ class Client implements UserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $nom = null;
+    private ?string $nom = null; 
+
+    #[ORM\Column(length: 255)]
+    private ?string $civilite = null; 
 
     #[ORM\Column(length: 255)]
     private ?string $prenom = null;
@@ -53,6 +56,18 @@ class Client implements UserInterface
         return $this;
     }
 
+    public function getCivilite(): ?string
+    {
+        return $this->civilite;
+    }
+
+    public function setCivilite(string $civilite): self
+    {
+        $this->civilite = $civilite;
+
+        return $this;
+    }
+
     public function getNom(): ?string
     {
         return $this->nom;
@@ -64,6 +79,8 @@ class Client implements UserInterface
 
         return $this;
     }
+
+    
 
     public function getPrenom(): ?string
     {

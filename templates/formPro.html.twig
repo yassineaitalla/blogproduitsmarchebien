@@ -21,6 +21,20 @@
           <h1 class="text-center text-light">Client Professionnel</h1>
           
           <form method="post" action="{{ path('page_formpro') }}">
+
+            <div class="mb-3">
+                <label for="civilite" class="form-label text-light">Civilité</label>
+                
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" id="civilite_m" name="civilite" value="M" required>
+                    <label class="form-check-label text-light" for="civilite_m">M.</label>
+                </div>
+            
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" id="civilite_mme" name="civilite" value="Mme" required>
+                    <label class="form-check-label text-light" for="civilite_mme">Mme</label>
+                </div>
+            </div>
             
               
             
