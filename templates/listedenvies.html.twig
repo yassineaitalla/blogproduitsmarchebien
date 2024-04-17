@@ -1,74 +1,36 @@
-{% include 'navbar.html.twig' %} 
+{% include 'navbar.html.twig' %}
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mon panier</title>
+    <title>Ma liste d'envies</title>
 </head>
 <body>
     <div class="container">
-        <div class="row justify-content-center align-items-center" style="height: 30vh;">
+        <div class="row justify-content-center">
             <div class="col-md-8">
-                <div class="table-container">
-                    <h1 class="text-center mb-4">Liste d'envies</h1>
-                    <table class="table table-striped">
-                        <thead class="thead-dark">
+                <h1 class="text-center mb-4">Ma liste d'envies</h1>
+                <table class="table">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Produit</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">Prix</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for listedEnvie in listedEnvies %}
                             <tr>
-                                
-                            
+                                <td>{{ listedEnvie.getIdproduit().getNom() }}</td>
+                                <td>{{ listedEnvie.getIdproduit().getDescription() }}</td>
+                                <td>{{ listedEnvie.getIdproduit().getPrix() }}</td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            {% for listedenvies in listedenvies %}
-                            <tr>
-                               
-                                
-                                
-                                <div class="col-md-4">
-                                    <div class="card">
-                                        <img src="" class="card-img-top" alt="">
-                                        <div class="card-body">
-                                            <h5 class="card-title"> Nom du produit : {{ listedenvies.getIdProduit().getNom()}} 6 M</h5>
-                                            <h5 class="card-title"> {{ listedenvies.getIdProduit().getprix()}} €</h5>
-                                        
-                                            
-                                            
-                                         
-            
-                                            <form action="" method="post"> 
-                                                <input type="number" name="quantite" id="quantite" value="1" min="1" class="form-control">
-                                                <button type="submit" class="btn btn-primary">Ajouter au panier</button>
-                                              
-                                            </form>
-            
-                                            
-                                            
-            
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                               
-                                
-           
-                                
-                            </tr>
-
-                            
-
-                            
-                            {% endfor %}
-                        </tbody>
-
-                        
-                        
-                    </table>
-                    <button type="submit" style="margin-left: 700px;" class="btn btn-primary" >Ajouter au panier</button>
-                </div>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
-  
 </body>
 </html>

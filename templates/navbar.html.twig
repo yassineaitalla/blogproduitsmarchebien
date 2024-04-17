@@ -49,7 +49,7 @@
   
   
     {% if app.session.get('client_id') %}
-    <a  class="btn btn-link">Ma liste d'envies</a>
+    <a  href="{{ path('listedenvies') }}" class="btn btn-link">Ma liste d'envies</a>
 {% endif %}
 
         

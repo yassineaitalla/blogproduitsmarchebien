@@ -89,6 +89,20 @@ class BlogController extends AbstractController
         ]);
     }
 
+    #[Route('/listedenvies', name: 'listedenvies')]
+public function listedEnvies(SessionInterface $session, EntityManagerInterface $entityManager): Response
+{
+    // Récupérer l'ID du client connecté depuis la session
+    $clientId = $session->get('client_id');
+
+    // Récupérer les produits de la liste d'envies du client connecté depuis la base de données
+    $listedEnvies = $entityManager->getRepository(Listedenvies::class)->findBy(['client' => $clientId]);
+
+    return $this->render('listedenvies.html.twig', [
+        'listedEnvies' => $listedEnvies,
+    ]);
+}
+
 
     
 
@@ -112,6 +126,7 @@ class BlogController extends AbstractController
     public function index(): Response
     {
         $produits = $this->entityManager->getRepository(Produit::class)->findAll();
+        
 
         return $this->render('produits.html.twig', [
             'produits' => $produits,

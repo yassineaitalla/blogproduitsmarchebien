@@ -59,7 +59,7 @@ class FormulaireProfessionnel extends AbstractController
             $entityManager->flush();
 
             // Ajouter un message flash
-            $this->addFlash('success', 'Les données ont été créées avec succès !');
+            $this->addFlash('success', 'Votre compte à été crée avec succès !');
 
             // Rediriger l'utilisateur vers une autre page après l'ajout
             return $this->redirectToRoute('page_formpro');
