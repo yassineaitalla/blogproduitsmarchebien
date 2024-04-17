@@ -90,20 +90,72 @@ class BlogController extends AbstractController
     }
 
     #[Route('/listedenvies', name: 'listedenvies')]
-    public function listedEnvies(SessionInterface $session, EntityManagerInterface $entityManager): Response
-    {
-        // Récupérer l'ID du client connecté depuis la session
-        $clientId = $session->get('client_id');
-    
-        // Récupérer les produits de la liste d'envies du client connecté depuis la base de données
-        $listedEnvies = $entityManager->getRepository(Listedenvies::class)->findBy(['client' => $clientId]);
-    
-        return $this->render('listedenvies.html.twig', [
-            'listedEnvies' => $listedEnvies,
-            'isEmpty' => empty($listedEnvies), // Ajout de cette variable pour vérifier si la liste est vide
-        ]);
+public function listedEnvies(SessionInterface $session, EntityManagerInterface $entityManager): Response
+{
+    // Récupérer l'ID du client connecté depuis la session
+    $clientId = $session->get('client_id');
+
+    // Récupérer les produits de la liste d'envies du client connecté depuis la base de données
+    $listedEnvies = $entityManager->getRepository(Listedenvies::class)->findBy(['client' => $clientId]);
+
+    return $this->render('listedenvies.html.twig', [
+        'listedEnvies' => $listedEnvies,
+        'isEmpty' => empty($listedEnvies), // Ajout de cette variable pour vérifier si la liste est vide
+    ]);
+}
+
+#[Route('/ajouter-au-panier/{id}', name: 'ajouter_au_panier2')]
+public function ajouterAuPanierPourlistedenvies(Request $request, $id, SessionInterface $session, EntityManagerInterface $entityManager): Response
+{
+    // Récupérer le produit à partir de son identifiant
+    $produit = $entityManager->getRepository(Produit::class)->find($id);
+
+    // Si le produit n'existe pas, rediriger vers une page d'erreur ou afficher un message d'erreur
+    if (!$produit) {
+        // Redirection vers une page d'erreur ou affichage d'un message d'erreur
     }
-    
+
+    // Récupérer l'ID du client à partir de la session
+    $clientId = $session->get('client_id');
+
+    // Si l'ID du client n'est pas défini, rediriger vers une page d'erreur ou afficher un message d'erreur
+    if (!$clientId) {
+        // Redirection vers une page d'erreur ou affichage d'un message d'erreur
+    }
+
+    // Récupérer le client à partir de son ID
+    $client = $entityManager->getRepository(Client::class)->find($clientId);
+
+    // Si le client n'existe pas, rediriger vers une page d'erreur ou afficher un message d'erreur
+    if (!$client) {
+        // Redirection vers une page d'erreur ou affichage d'un message d'erreur
+    }
+
+    // Supprimer le produit de la liste d'envies du client
+    $listeEnvies = $entityManager->getRepository(Listedenvies::class)->findOneBy(['client' => $client, 'idproduit' => $produit]);
+
+    if ($listeEnvies) {
+        $entityManager->remove($listeEnvies);
+        $entityManager->flush();
+    }
+
+    // Créer une nouvelle instance de Panier
+    $panier = new Panier();
+
+    // Définir l'ID du produit dans le panier
+    $panier->setIdProduit($produit);
+
+    // Définir le client dans le panier
+    $panier->setClient($client);
+
+    // Persister le panier
+    $entityManager->persist($panier);
+    $entityManager->flush();
+
+    // Rediriger l'utilisateur vers une page de confirmation ou à la page précédente
+    return $this->redirectToRoute('panier.html.twig');
+}
+
 
 
     

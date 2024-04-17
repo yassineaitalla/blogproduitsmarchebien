@@ -28,6 +28,11 @@
                                     <td>{{ listedEnvie.getIdproduit().getNom() }}</td>
                                     <td>{{ listedEnvie.getIdproduit().getDescription() }}</td>
                                     <td>{{ listedEnvie.getIdproduit().getPrix() }}</td>
+                                    <td>
+                                        <form action="{{ path('ajouter_au_panier2', {'id': listedEnvie.getIdproduit().getId()}) }}" method="post"> 
+                                            <button type="submit" class="btn btn-primary">Transferer au panier</button>
+                                        </form>
+                                    </td>
                                 </tr>
                             {% endfor %}
                         </tbody>
