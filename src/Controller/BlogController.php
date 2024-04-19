@@ -89,7 +89,7 @@ class BlogController extends AbstractController
         ]);
     }
 
-    #[Route('/listedenvies', name: 'listedenvies')]
+#[Route('/listedenvies', name: 'listedenvies')]
 public function listedEnvies(SessionInterface $session, EntityManagerInterface $entityManager): Response
 {
     // Récupérer l'ID du client connecté depuis la session
@@ -183,57 +183,6 @@ public function ajouterAuPanier(Request $request, $id, SessionInterface $session
 }
 
 
-#[Route('/ajouter-au-panierrrrrrr/{id}', name: 'supprimerproduitpanier')]
-public function Supprimerproduitdupanier(Request $request, $id, SessionInterface $session): Response
-{
-    // Récupérer le produit à partir de son identifiant
-    $produit = $this->entityManager->getRepository(Produit::class)->find($id);
-
-    // Si le produit n'existe pas, rediriger vers une page d'erreur ou afficher un message d'erreur
-    if (!$produit) {
-        // Redirection vers une page d'erreur ou affichage d'un message d'erreur
-    }
-
-    // Récupérer l'ID du client à partir de la session
-    $clientId = $session->get('client_id');
-
-    // Si l'ID du client n'est pas défini, rediriger vers une page d'erreur ou afficher un message d'erreur
-    if (!$clientId) {
-        // Redirection vers une page d'erreur ou affichage d'un message d'erreur
-    }
-
-    // Récupérer le client à partir de son ID
-    $client = $this->entityManager->getRepository(Client::class)->find($clientId);
-
-    // Si le client n'existe pas, rediriger vers une page d'erreur ou afficher un message d'erreur
-    if (!$client) {
-        // Redirection vers une page d'erreur ou affichage d'un message d'erreur
-    }
-
-    // Vérifier si le produit existe déjà dans le panier pour cet utilisateur
-    $panierExistant = $this->entityManager->getRepository(Panier::class)->findOneBy(['client' => $client, 'id_produit' => $produit]);
-
-    
-    $this->entityManager->flush();
-
-    // Supprimer l'entrée correspondante de la liste d'envies
-    if ($panierExistant) {
-        $this->entityManager->remove($panierExistant);
-        $this->entityManager->flush();
-    }
-
-    // Rediriger l'utilisateur vers une page de confirmation ou à la page précédente
-    return $this->redirectToRoute('affichagepanier');
-}
-
-
-    
-
-    
-    
-
-    
-
 
 
     private $entityManager;
@@ -318,6 +267,33 @@ public function Supprimerproduitdupanier(Request $request, $id, SessionInterface
          // Afficher le formulaire
          return $this->render('image.html.twig');
      }
+
+
+
+     
+
+    #[Route('/panier', name: 'panier')]
+    public function panier(SessionInterface $session): Response
+    {
+        // Récupérer l'ID du client à partir de la session
+        $clientId = $session->get('client_id');
+
+        // Si l'ID du client n'est pas défini dans la session, redirigez vers une page d'erreur ou affichez un message d'erreur
+        if (!$clientId) {
+            // Redirection vers une page d'erreur ou affichage d'un message d'erreur
+        }
+
+        // Récupérer tous les éléments du panier associés à ce client en utilisant l'EntityManager
+        $panierElements = $this->entityManager->getRepository(Panier::class)->findBy(['client' => $clientId]);
+
+        // Compter le nombre total d'éléments dans le panier
+        $nombreProduitsDansPanier = count($panierElements);
+
+        // Passer le nombre total d'éléments dans le panier à la vue
+        return $this->render('panier5.html.twig', [
+            'nombreProduitsDansPanier' => $nombreProduitsDansPanier,
+        ]);
+    }
 
 
 

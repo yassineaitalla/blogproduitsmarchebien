@@ -21,6 +21,12 @@ app_logout:
     path: /logout
     controller: App\Controller\SecurityController::logout
 
+supprimer_produit_panier:
+    path: '/supprimer-produit-panier/{id}'
+    controller: App\Controller\NomDeVotreController::Supprimerproduitdupanier
+    methods: ['POST']
+
+
 
 
 

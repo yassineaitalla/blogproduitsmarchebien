@@ -2,14 +2,11 @@
 
 namespace App\Controller;
 use App\Entity\Client;
-use App\Entity\Listedenvies;
-use App\Entity\Societe;
+
 use App\Entity\Produit;
-use App\Entity\Test;
+
 use App\Entity\Panier;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 
 
@@ -18,16 +15,20 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 
 use Symfony\Component\HttpFoundation\Request;
-
-
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;  // Importe la classe Route de l'attribut Route.
 
 
-class BlogController extends AbstractController
+class SupprimerProduitDupanierController extends AbstractController
 {
+
+
+
+    
+
+
 #[Route('/ajouter-au-panierrrrrrr/{id}', name: 'supprimerproduitpanier')]
 public function Supprimerproduitdupanier(Request $request, $id, SessionInterface $session): Response
 {
@@ -70,11 +71,54 @@ public function Supprimerproduitdupanier(Request $request, $id, SessionInterface
     // Rediriger l'utilisateur vers une page de confirmation ou à la page précédente
     return $this->redirectToRoute('affichagepanier');
 }
-private $entityManager;
+
+
+    
+
+    
+    
+
+    
+
+
+
+    private $entityManager;
+    private $panierService;
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+        
+    }
+
+   
+
+
+
+
+
 
 
 }
 
 
 
+
+
+
+
+
+
+
+
+   
+    
+
+    
+
+    
+
+   
+
+    
     

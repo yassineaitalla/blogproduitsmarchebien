@@ -28,7 +28,7 @@ class Produit
     private ?float $coef = null;
 
     #[ORM\Column]
-    private ?float $Longueur = null;
+    private ?float $KgMetre = null;
 
     #[ORM\Column]
     private ?float $masseLineaire = null;
@@ -147,14 +147,14 @@ class Produit
     ///
     
 
-    public function getLongueur(): ?float
+    public function getKgMetre(): ?float
     {
-        return $this->Longueur;
+        return $this->KgMetre;
     }
 
-    public function setLongueur(float $Longueur): static
+    public function setKgMetre(float $KgMetre): static
     {
-        $this->Longueur = $Longueur;
+        $this->KgMetre = $KgMetre;
 
         return $this;
     } 
