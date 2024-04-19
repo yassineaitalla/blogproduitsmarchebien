@@ -32,7 +32,7 @@ class AjouterAlaListeDenvies extends AbstractController
     }
 
     #[Route("/ajouter-au-laliste/{id}", name:"ajouter_a_la_listedenvie")]
-public function ajouterAlalistedenvie(Request $request, $id, SessionInterface  $session): Response
+public function ajouterAlalistedenvie(Request $request, $id, SessionInterface $session): Response
 {
     // Récupérer le produit à partir de son identifiant
     $produit = $this->entityManager->getRepository(Produit::class)->find($id);
@@ -72,10 +72,22 @@ public function ajouterAlalistedenvie(Request $request, $id, SessionInterface  $
         return $this->redirectToRoute('produits');
     }
 
+    // Récupérer la quantité saisie par l'utilisateur
+    $quantite = $request->request->get('quantite');
+
+    // Vérifier si la quantité est définie et non vide
+    if ($quantite !== null && $quantite !== '') {
+        $quantite = intval($quantite); // Convertir en entier
+    } else {
+        // Si la quantité n'est pas définie ou vide, mettre la quantité par défaut à 1
+        $quantite = 1;
+    }
+
     // Créer une nouvelle instance de Listedenvies
     $listedenvies = new Listedenvies();
     $listedenvies->setIdproduit($produit);
     $listedenvies->setClient($client);
+    $listedenvies->setQuantite($quantite); // Définir la quantité dans la liste d'envies
 
     // Persister la liste d'envies
     $this->entityManager->persist($listedenvies);
@@ -89,5 +101,4 @@ public function ajouterAlalistedenvie(Request $request, $id, SessionInterface  $
     // Rediriger l'utilisateur vers la page précédente
     return $this->redirectToRoute('produits');
 }
-
 }

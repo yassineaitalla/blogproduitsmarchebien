@@ -17,7 +17,7 @@
                             <tr>
                                 <th scope="col">Produit</th>
                                 <th scope="col">Quantite</th>
-                                <th scope="col">Prix</th>
+                                <th scope="col">Prix de la barre</th>
                                 <th scope="col"></th> <!-- Colonne pour le bouton de suppression -->
                             </tr>
                         </thead>
@@ -26,7 +26,7 @@
                             <tr>
                                 <td>{{ panier.getIdProduit().getNom() }}</td>
                                 <td>{{ panier.quantite }}</td>
-                                <td>{{ panier.total }}</td>
+                                <td>{{ panier.getIdProduit().getprix() }}</td>
                                 <td>
                                     <form action="{{ path('supprimerproduitpanier', {'id': panier.getIdProduit().getId()}) }}" method="post"> 
                                         <button type="submit" class="btn btn-danger">Supprimer le produit</button>

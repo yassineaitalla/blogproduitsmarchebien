@@ -20,7 +20,7 @@
                                 <th scope="col">Produit</th>
                                 <th scope="col">Description</th>
                                 <th scope="col">Prix</th>
-                                <th scope="col"></th> <!-- Ajouté pour le bouton de transfert -->
+                                <th scope="col">Quantité</th> 
                             </tr>
                         </thead>
                         <tbody>
@@ -29,6 +29,7 @@
                                     <td>{{ listedEnvie.getIdproduit().getNom() }}</td>
                                     <td>{{ listedEnvie.getIdproduit().getDescription() }}</td>
                                     <td>{{ listedEnvie.getIdproduit().getPrix() }}</td>
+                                    <td>{{ listedEnvie.getQuantite() }}</td>
                                     <td>
                                         <form action="{{ path('ajouter', {'id': listedEnvie.getIdproduit().getId()}) }}" method="post"> 
                                             <button type="submit" class="btn btn-primary">Transferer le produit </button>
