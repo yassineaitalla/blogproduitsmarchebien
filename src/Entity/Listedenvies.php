@@ -17,6 +17,10 @@ class Listedenvies
     #[ORM\JoinColumn(nullable: false)]
     private ?produit $idproduit = null;
 
+    #[ORM\Column(type: "integer")]  //
+
+    private ?int $quantite = null;
+
 
 
     public function getId(): ?int
@@ -65,6 +69,18 @@ class Listedenvies
     public function setClient(?Client $client): self
     {
         $this->client = $client;
+
+        return $this;
+    }
+
+    public function getquantite(): ?int
+    {
+        return $this->quantite;
+    }
+
+    public function setquantite(int $quantite): static
+    {
+        $this->quantite = $quantite;
 
         return $this;
     }

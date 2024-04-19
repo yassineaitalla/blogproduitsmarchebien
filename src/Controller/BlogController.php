@@ -205,6 +205,40 @@ public function ajouterAuPanier(Request $request, $id, SessionInterface $session
         ]);
     }
 
+
+
+    #[Route('/supprimer-produit-liste-envies/{id}', name: 'supprimer_produit_liste_envies')]
+    public function supprimerProduitListeEnvies($id, SessionInterface $session): Response
+    {
+        // Récupérer le produit à partir de son identifiant
+        $produit = $this->entityManager->getRepository(Produit::class)->find($id);
+    
+        // Si le produit n'existe pas, rediriger vers une page d'erreur ou afficher un message d'erreur
+        if (!$produit) {
+            // Redirection vers une page d'erreur ou affichage d'un message d'erreur
+        }
+    
+        // Récupérer l'ID du client à partir de la session
+        $clientId = $session->get('client_id');
+    
+        // Si l'ID du client n'est pas défini, rediriger vers une page d'erreur ou afficher un message d'erreur
+        if (!$clientId) {
+            // Redirection vers une page d'erreur ou affichage d'un message d'erreur
+        }
+    
+        // Récupérer l'entrée de la liste d'envies correspondant au produit et au client
+        $listedEnvie = $this->entityManager->getRepository(Listedenvies::class)->findOneBy(['client' => $clientId, 'idproduit' => $produit]);
+    
+        // Si l'entrée de la liste d'envies existe, supprimer l'entrée
+        if ($listedEnvie) {
+            $this->entityManager->remove($listedEnvie);
+            $this->entityManager->flush();
+        }
+    
+        // Rediriger l'utilisateur vers une page de confirmation ou à la page précédente
+        return $this->redirectToRoute('listedenvies'); // Vous pouvez remplacer 'produits' par la route de votre choix
+    }
+    
     
     
 
