@@ -61,11 +61,11 @@ public function ajouterAuPanier(Request $request, $id, SessionInterface $session
         // Redirection vers une page d'erreur ou affichage d'un message d'erreur
     }
 
-    // Vérifier si le produit existe déjà dans le panier pour cet utilisateur
+    // Vérifier si le produit existe déjà dans le panier pour cet utilisateurr
     $panierExistant = $this->entityManager->getRepository(Panier::class)->findOneBy(['client' => $client, 'id_produit' => $produit]);
 
     // Récupérer la quantité saisie par l'utilisateur
-    $quantite = $request->request->getInt('quantite');
+    $quantite = $request->request->get('quantite');
 
     // Vérifier si la quantité est définie et non vide
     if ($quantite !== null && $quantite !== '') {
