@@ -34,43 +34,32 @@ class AjouterAlaListeDenvies extends AbstractController
     #[Route("/ajouter-au-laliste/{id}", name:"ajouter_a_la_listedenvie")]
 public function ajouterAlalistedenvie(Request $request, $id, SessionInterface $session): Response
 {
-    // Récupérer le produit à partir de son identifiant
+   // Récupérer le produit à partir de son identifiant
     $produit = $this->entityManager->getRepository(Produit::class)->find($id);
 
-    // Vérifier si le produit existe
+    // Si le produit n'existe pas, rediriger vers une page d'erreur ou afficher un message d'erreur
     if (!$produit) {
-        // Afficher un message d'erreur
-        $this->addFlash('error', 'Le produit n\'existe pas.');
-        return $this->redirectToRoute('produits');
+        // Redirection vers une page d'erreur ou affichage d'un message d'erreur
     }
 
+    // Récupérer l'ID du client à partir de la session
     $clientId = $session->get('client_id');
 
-    // Si l'ID du client n'est pas présent dans la session, afficher un message d'erreur
+    // Si l'ID du client n'est pas défini, rediriger vers une page d'erreur ou afficher un message d'erreur
     if (!$clientId) {
-        // Afficher un message d'erreur
-        $this->addFlash('error', 'Identifiant client non trouvé.');
-        return $this->redirectToRoute('produits');
+        // Redirection vers une page d'erreur ou affichage d'un message d'erreur
     }
 
-    // Récupérer le client à partir de son identifiant
+    // Récupérer le client à partir de son ID
     $client = $this->entityManager->getRepository(Client::class)->find($clientId);
 
-    // Si le client n'existe pas, afficher un message d'erreur
+    // Si le client n'existe pas, rediriger vers une page d'erreur ou afficher un message d'erreur
     if (!$client) {
-        // Afficher un message d'erreur
-        $this->addFlash('error', 'Le client n\'existe pas.');
-        return $this->redirectToRoute('produits');
+        // Redirection vers une page d'erreur ou affichage d'un message d'erreur
     }
 
-    // Vérifier si le produit est déjà dans la liste d'envies du client
-    $existingList = $this->entityManager->getRepository(Listedenvies::class)->findOneBy(['idproduit' => $produit, 'client' => $client]);
-
-    // Si le produit existe déjà dans la liste d'envies du client, afficher un message d'erreur
-    if ($existingList) {
-        $this->addFlash('error', 'Ce produit est déjà dans votre liste d\'envies.');
-        return $this->redirectToRoute('produits');
-    }
+    // Vérifier si le produit existe déjà dans le panier pour cet utilisateur
+    $panierExistant = $this->entityManager->getRepository(Listedenvies::class)->findOneBy(['client' => $client, 'idproduit' => $produit]);
 
     // Récupérer la quantité saisie par l'utilisateur
     $quantite = $request->request->get('quantite');
@@ -83,22 +72,34 @@ public function ajouterAlalistedenvie(Request $request, $id, SessionInterface $s
         $quantite = 1;
     }
 
-    // Créer une nouvelle instance de Listedenvies
-    $listedenvies = new Listedenvies();
-    $listedenvies->setIdproduit($produit);
-    $listedenvies->setClient($client);
-    $listedenvies->setQuantite($quantite); // Définir la quantité dans la liste d'envies
+    // Calculer le total en multipliant la quantité par le prix du produit
+    
 
-    // Persister la liste d'envies
-    $this->entityManager->persist($listedenvies);
+    // Si le produit n'est pas déjà dans le panier, l'ajouter
+    if (!$panierExistant) {
+        // Créer une nouvelle instance de Panier
+        $panier = new Listedenvies();
+        // Définir l'ID du produit dans le panier
+        $panier->setIdProduit($produit);
+        // Définir le total dans le panier
+       
+        // Définir la quantité dans le panier
+        $panier->setQuantite($quantite);
+        // Définir le client dans le panier
+        $panier->setClient($client);
+        // Persister le panier
+        $this->entityManager->persist($panier);
+    } else {
+        // Si le produit est déjà dans le panier, modifier la quantité et le total
+        $panierExistant->setQuantite($quantite);
+        
+    }
 
     // Enregistrer les modifications dans la base de données
     $this->entityManager->flush();
 
-    // Afficher un message de succès
-    $this->addFlash('success', 'Le produit a été ajouté à votre liste d\'envies.');
-
-    // Rediriger l'utilisateur vers la page précédente
+    // Rediriger l'utilisateur vers une page de confirmation ou à la page précédente
     return $this->redirectToRoute('produits');
 }
+
 }

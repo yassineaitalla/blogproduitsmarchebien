@@ -65,7 +65,7 @@ public function ajouterAuPanier(Request $request, $id, SessionInterface $session
     $panierExistant = $this->entityManager->getRepository(Panier::class)->findOneBy(['client' => $client, 'id_produit' => $produit]);
 
     // Récupérer la quantité saisie par l'utilisateur
-    $quantite = $request->request->get('quantite');
+    $quantite = $request->request->getInt('quantite');
 
     // Vérifier si la quantité est définie et non vide
     if ($quantite !== null && $quantite !== '') {

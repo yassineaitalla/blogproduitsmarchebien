@@ -14,8 +14,9 @@ class Panier
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 0)]
-    private ?string $total = null;
+    #[ORM\Column]
+
+    private ?float $total = null;
 
     #[ORM\ManyToOne(inversedBy: 'paniers')]
     #[ORM\JoinColumn(nullable: false)]
@@ -30,12 +31,12 @@ class Panier
         return $this->id;
     }
 
-    public function getTotal(): ?string
+    public function getTotal(): ?float
     {
         return $this->total;
     }
 
-    public function setTotal(string $total): static
+    public function setTotal(float $total): static
     {
         $this->total = $total;
 
@@ -68,7 +69,7 @@ class Panier
     }
 
 
-    // Relation vers la table client 
+    // Relation vers la table clientt 
 
     #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: "client")]
     #[ORM\JoinColumn(name: "client_id", referencedColumnName: "id")]
