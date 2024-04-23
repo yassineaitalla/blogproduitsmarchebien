@@ -37,16 +37,16 @@
                                                 <div class="row">
                                                     <div class="col">
                                                         <label for="longueur">Choisissez votre longueur:</label>
+                                                        <select name="inp" id="inp{{ produit.id }}" class="form-control" onchange="updatePrice(this.value, '{{ produit.id }}')">
+                                                            <option value="1">1 mètre</option>
+                                                            <option value="2">2 mètres</option>
+                                                            <option value="3">3 mètres</option>
+                                                            <option value="4">4 mètres</option>
+                                                            <option value="5">5 mètres</option>
+                                                            <option value="6">6 mètres</option>
+                                                        </select>
                                                         
-                                                        <div class="btn-group-vertical" role="group" aria-label="Choix de longueur">
-                                                            <button type="button" class="btn btn-secondary" onclick="updatePrice(1, '{{ produit.id }}')">1 mètre</button>
-                                                            <button type="button" class="btn btn-secondary" onclick="updatePrice(2, '{{ produit.id }}')">2 mètres</button>
-                                                            <button type="button" class="btn btn-secondary" onclick="updatePrice(3, '{{ produit.id }}')">3 mètres</button>
-                                                            <button type="button" class="btn btn-secondary" onclick="updatePrice(4, '{{ produit.id }}')">4 mètres</button>
-                                                            <button type="button" class="btn btn-secondary" onclick="updatePrice(5, '{{ produit.id }}')">5 mètres</button>
-                                                            <button type="button" class="btn btn-secondary" onclick="updatePrice(6, '{{ produit.id }}')">6 mètres</button>
-                                                            <button type="button" class="btn btn-secondary" onclick="showCustomLengthInput()">Sur mesure</button>
-                                                        </div>
+                                                       
                                                     </div>
                                                 </div>
 
@@ -131,6 +131,8 @@
         
                 // Mettez à jour l'élément d'affichage du prix correspondant
                 document.getElementById('prixProduit' + produitId).innerHTML = "Prix du produit <span id='prixInitial" + produitId + "'>" + prixTotal + "</span> € ttc";
+
+                
             }
         </script>
 
