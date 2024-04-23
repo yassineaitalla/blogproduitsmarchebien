@@ -15,15 +15,26 @@
                     <table class="table table-striped">
                         <thead class="thead-dark">
                             <tr>
-                                <th scope="col">Produit</th>
-                                <th scope="col">Quantite</th>
-                                <th scope="col">Prix de la barre</th>
-                                <th scope="col">Prix final</th>
-                                <th scope="col">Longueur Mettre</th>
-                                <th scope="col">Prix découpe</th>
-                                <th scope="col">Poids</th>
+                                {% if message is not empty %}
+                                <p>{{ message }}</p>
+                            {% endif %}
+                            {% if panier is not empty %}
+                            <th scope="col">Produit</th>
+                            <th scope="col">Quantite</th>
+                            <th scope="col">Prix de la barre</th>
+                            <th scope="col">Prix final</th>
+                            <th scope="col">Longueur Mettre</th>
+                            <th scope="col">Prix découpe</th>
+                            <th scope="col">Poids</th>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="3" class="text-right"><strong>Total TTC:</strong></td>
+                                    <td class="text-right">{{ sommeTotal }} €</td>
+                                </tr>
+                            </tfoot>
+                        {% endif %}
                                 
-                                <th scope="col"></th> <!-- Colonne pour le bouton de suppression -->
+                               
                             </tr>
                         </thead>
                         <tbody>
@@ -50,20 +61,13 @@
                             </tr>
                             {% endfor %}
                         </tbody>
-                        <tfoot>
-                            <tr>
-                                <td colspan="3" class="text-right"><strong>Total TTC:</strong></td>
-                                <td class="text-right">{{ sommeTotal }} €</td>
-                            </tr>
-                        </tfoot>
+                       
 
                    
                             
                        
                     </table>
-                    {% if message is not empty %}
-                        <p>{{ message }}</p>
-                    {% endif %}
+                  
                     {% if afficherPasserCommande %}
                         <a href="#" class="btn btn-primary">Passer commande</a>
                         <a href="#" class="btn btn-primary">Vider le panier</a>

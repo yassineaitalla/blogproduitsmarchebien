@@ -73,12 +73,16 @@ public function affichagePanier(Request $request): Response
         'message' => $message,
         'afficherPasserCommande' => $afficherPasserCommande,
     ]);
+
+  
+
+    
 }
 
 
     
-    }
+    
 
 
-
+}
 

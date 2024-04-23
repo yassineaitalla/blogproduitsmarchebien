@@ -1,47 +1,80 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Demander devis</title>
     <link rel="stylesheet" href="">
 </head>
-<body >
-
-    
+<body>
     <header>
         {% include 'navbar.html.twig' %} 
-        
     </header>
 
+    <main>
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    {% if message is not empty %}
+                    <th scope="col" colspan="7">
+                        <p>{{ message }}</p>
+                    </th>
+                    {% endif %}
+                </tr>
+                {% if panier is not empty %}
+                <tr>
+                    <th scope="col">Produit</th>
+                    <th scope="col">Quantite</th>
+                    <th scope="col">Prix de la barre</th>
+                    <th scope="col">Prix final</th>
+                    <th scope="col">Longueur Mettre</th>
+                    <th scope="col">Prix découpe</th>
+                    <th scope="col">Poids</th>
+                </tr>
+                <tr>
+                    <tfoot>
+                        <td colspan="3" class="text-right"><strong>Total TTC:</strong></td>
+                        <td class="text-right">{{ sommeTotal }} €</td>
+                    </tfoot>
+                </tr>
+                {% endif %}
+            </thead>
+            <tbody>
+                {% for panier in panier %}
+                <tr>
+                    <td>{{ panier.getIdProduit().getNom() }}</td>
+                    <td>{{ panier.quantite }}</td>
+                    <td>{{ panier.getIdProduit().getprix() }} €</td>
+                    <td>
+                        {% if panier.quantite == 1 %}
+                        {{ panier.getIdProduit().getprix() }} €
+                        {% else %}
+                        {{ panier.getIdProduit().getprix() * panier.quantite }} 
+                        {% endif %}
+                    </td>
+                    <td>{{ panier.Longueurcm }} Mètre</td>
+                    <td>{{ panier.prixDecoupe }} €</td>
+                    <td>{{ panier.getIdProduit().getmasseLineaireKgMetre() }} Kg</td>
+                    <td>
+                        <form action="{{ path('supprimerproduitpanier', {'id': panier.getIdProduit().getId()}) }}" method="post"> 
+                            <button type="submit" class="btn btn-danger">Supprimer le produit</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
 
-<main>
+        <div class="mb-3">
+            <label for="message" class="form-label">Ecrire votre Message</label>
+            <textarea class="form-control" id="message" name="message" rows="5"></textarea>
+        </div>
 
+        <a href="{{ path('demanderdevis') }}" class="btn btn-primary">Soumettre le devis</a>
+    </main>
 
-    <div class="mb-3">
-        <label for="message" class="form-label">Message</label>
-        <textarea class="form-control" id="message" name="message" rows="5"></textarea>
-    </div>
-
-    <a href="{{ path('demanderdevis') }}" class="btn btn-primary">Soumettre le devis</a>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-     
-    
     <style> 
-       
         body {
             /*background-image: url("{{ asset('images/metal.jpg') }}");*/
             background-size: cover; /* Ajustez cette propriété selon vos besoins */
@@ -49,44 +82,13 @@
             background-repeat: no-repeat;
             /* Ajoutez d'autres styles au besoin */
         }
-        
-        
-       
-
         /* Ajoutez d'autres styles CSS pour le contenu de la page */
-        
     </style>
-        
-
-
-
-
-
 
     <!-- Footer -->
     <footer>
         {% include 'footer.html.twig' %} 
     </footer>
     <!-- Footer -->
-    
-
-
-            
-    
 </body>
-
-
-
-
-    </html>
-
-
-
-
-
-
-
-
-
-
-   
+</html>
