@@ -21,6 +21,10 @@ class Listedenvies
 
     private ?int $quantite = null;
 
+    #[ORM\Column]
+
+    private ?float $total = null;
+
 
 
     public function getId(): ?int
@@ -81,6 +85,18 @@ class Listedenvies
     public function setquantite(int $quantite): static
     {
         $this->quantite = $quantite;
+
+        return $this;
+    }
+
+    public function getTotal(): ?float
+    {
+        return $this->total;
+    }
+
+    public function setTotal(float $total): static
+    {
+        $this->total = $total;
 
         return $this;
     }

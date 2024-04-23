@@ -66,6 +66,7 @@ public function ajouterAuPanier(Request $request, $id, SessionInterface $session
 
     // Récupérer la quantité saisie par l'utilisateur
     $quantite = $request->request->get('quantite');
+    $longueurCm = $request->request->get('longueur');
 
     // Vérifier si la quantité est définie et non vide
     if ($quantite !== null && $quantite !== '') {
@@ -88,14 +89,21 @@ public function ajouterAuPanier(Request $request, $id, SessionInterface $session
         $panier->setTotal($total);
         // Définir la quantité dans le panier
         $panier->setQuantite($quantite);
+        $prixInitial = $produit->getPrix();
+
+// Calculer le prix total en fonction de la longueur sélectionnée
+$total = $longueurCm * $prixInitial;
+
         // Définir le client dans le panier
         $panier->setClient($client);
+        $panier->setLongueurcm($longueurCm);
         // Persister le panier
         $this->entityManager->persist($panier);
     } else {
         // Si le produit est déjà dans le panier, modifier la quantité et le total
         $panierExistant->setQuantite($quantite);
         $panierExistant->setTotal($total);
+        
     }
 
     // Enregistrer les modifications dans la base de données

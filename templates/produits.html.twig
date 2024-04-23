@@ -27,7 +27,7 @@
                                 
                                 <h5 class="card-title">Remise de {{ produit.remise }} %</h5>
                               
-                                <p id="prixProduit{{ produit.id }}" class="card-text">Prix du produit <span id="prixInitial{{ produit.id }}">{{ produit.prix }}</span> € ttc</p>
+                                <p id="prixProduit{{ produit.id }}" class="card-text">Prix du produit <span id="prixInitial{{ produit.id }}">{{ produit.prix }} €</span> € ttc</p>
                                 
                                 {% if app.session.get('client_id') %}
                                     <form action="{{ path('ajouter_au_panier', {'id': produit.id}) }}" method="post"> 
@@ -37,6 +37,7 @@
                                                 <div class="row">
                                                     <div class="col">
                                                         <label for="longueur">Choisissez votre longueur:</label>
+                                                        
                                                         <div class="btn-group-vertical" role="group" aria-label="Choix de longueur">
                                                             <button type="button" class="btn btn-secondary" onclick="updatePrice(1, '{{ produit.id }}')">1 mètre</button>
                                                             <button type="button" class="btn btn-secondary" onclick="updatePrice(2, '{{ produit.id }}')">2 mètres</button>
@@ -48,6 +49,8 @@
                                                         </div>
                                                     </div>
                                                 </div>
+
+                                                
                                                 
                                                 <div class="row" id="customLengthInput" style="display: none;">
                                                     <div class="col">
@@ -61,9 +64,12 @@
                                     </form>
                                     <br>
                                     <br>
+                                    <label>Selectionner la quantite de produit a ajouter dans la liste d'envies</label>
                                     <form action="{{ path('ajouter_a_la_listedenvie', {'id': produit.id}) }}" method="post"> 
+                                        <input type="number" name="quantite" id="quantite{{ produit.id }}" class="form-control" value="1" min="1">
                                         <button type="submit" class="btn btn-primary">Ajouter à la liste d'envies</button>
                                     </form>
+                                    
                                 {% else %}
                                     <p>Veuillez vous connecter pour ajouter des produits au panier et à la liste d'envies.</p>
                                     <a href="{{ path('verification') }}" class="btn btn-primary">
@@ -127,6 +133,8 @@
                 document.getElementById('prixProduit' + produitId).innerHTML = "Prix du produit <span id='prixInitial" + produitId + "'>" + prixTotal + "</span> € ttc";
             }
         </script>
+
+       
         
         
         

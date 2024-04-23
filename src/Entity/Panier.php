@@ -91,14 +91,14 @@ class Panier
     // colonne longueurcm
 
     #[ORM\Column(nullable: true)] // Définit la colonne comme nullable
-private ?float $Longueurcm = null;
+private ?string $Longueurcm = null;
 
-public function getLongueurcm(): ?float
+public function getLongueurcm(): ?string
 {
     return $this->Longueurcm;
 }
 
-public function setLongueurcm(?float $Longueurcm): static
+public function setLongueurcm(?string $Longueurcm): static
 {
     $this->Longueurcm = $Longueurcm;
 

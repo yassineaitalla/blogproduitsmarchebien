@@ -18,6 +18,9 @@
                                 <th scope="col">Produit</th>
                                 <th scope="col">Quantite</th>
                                 <th scope="col">Prix de la barre</th>
+                                <th scope="col">Prix final</th>
+                                <th scope="col">Longueur Mettre</th>
+                                
                                 <th scope="col"></th> <!-- Colonne pour le bouton de suppression -->
                             </tr>
                         </thead>
@@ -26,7 +29,14 @@
                             <tr>
                                 <td>{{ panier.getIdProduit().getNom() }}</td>
                                 <td>{{ panier.quantite }}</td>
-                                <td>{{ panier.getIdProduit().getprix() }}</td>
+                                <td>{{ panier.getIdProduit().getprix() }} €</td>
+                                <td>
+                                    {% if panier.quantite == 1 %}
+                                        {{ panier.getIdProduit().getprix() }} €
+                                    {% else %}
+                                        {{ panier.getIdProduit().getprix()* panier.quantite }} €
+                                    {% endif %}
+                                </td>
                                 <td>
                                     <form action="{{ path('supprimerproduitpanier', {'id': panier.getIdProduit().getId()}) }}" method="post"> 
                                         <button type="submit" class="btn btn-danger">Supprimer le produit</button>
@@ -41,6 +51,10 @@
                                 <td class="text-right">{{ sommeTotal }} €</td>
                             </tr>
                         </tfoot>
+
+                   
+                            
+                       
                     </table>
                     {% if message is not empty %}
                         <p>{{ message }}</p>

@@ -19,8 +19,11 @@
                             <tr>
                                 <th scope="col">Produit</th>
                                 <th scope="col">Description</th>
-                                <th scope="col">Prix</th>
-                                <th scope="col">Quantité</th> 
+                                <th scope="col">Prix de la bare</th>
+                                <th scope="col">Quantite</th>
+
+                                <th scope="col">Prix final</th> 
+                               
                             </tr>
                         </thead>
                         <tbody>
@@ -30,6 +33,15 @@
                                     <td>{{ listedEnvie.getIdproduit().getDescription() }}</td>
                                     <td>{{ listedEnvie.getIdproduit().getPrix() }}</td>
                                     <td>{{ listedEnvie.getQuantite() }}</td>
+                                    <td>
+                                        {% if listedEnvie.quantite == 1 %}
+                                            {{ listedEnvie.getIdProduit().getprix() }} €
+                                        {% else %}
+                                            {{ listedEnvie.getIdProduit().getprix()* listedEnvie.quantite }} €
+                                        {% endif %}
+                                    </td>
+
+                           
                                     <td>
                                         <form action="{{ path('ajouter', {'id': listedEnvie.getIdproduit().getId()}) }}" method="post"> 
                                             <button type="submit" class="btn btn-primary">Transferer le produit </button>
@@ -41,6 +53,13 @@
                                 </tr>
                             {% endfor %}
                         </tbody>
+
+                        <tfoot>
+                            <tr>
+                                <td colspan="3" class="text-right"><strong>Total TTC:</strong></td>
+                                <td class="text-right">{{ sommeTotal }} €</td>
+                            </tr>
+                        </tfoot>
                     </table>
                 {% endif %}
             </div>

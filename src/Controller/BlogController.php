@@ -94,15 +94,25 @@ public function listedEnvies(SessionInterface $session, EntityManagerInterface $
 {
     // Récupérer l'ID du client connecté depuis la session
     $clientId = $session->get('client_id');
+ 
 
     // Récupérer les produits de la liste d'envies du client connecté depuis la base de données
     $listedEnvies = $entityManager->getRepository(Listedenvies::class)->findBy(['client' => $clientId]);
 
+    $sommeTotal = 0;
+    foreach ($listedEnvies as $produit) {
+        $sommeTotal += $produit->getTotal();
+    }
+
     return $this->render('listedenvies.html.twig', [
         'listedEnvies' => $listedEnvies,
         'isEmpty' => empty($listedEnvies), // Ajout de cette variable pour vérifier si la liste est vide
+        'sommeTotal' => $sommeTotal,
     ]);
 }
+
+
+    
 
 #[Route('/ajouter-au-panierrr/{id}', name: 'ajouter')]
 public function ajouterAuPanier(Request $request, $id, SessionInterface $session): Response
@@ -369,18 +379,8 @@ public function ajouterAuPanier(Request $request, $id, SessionInterface $session
     
     
 
-#[Route('/affichagelistedenvie', name: 'affichagelistedenvie')]
-public function affichagelistedenvie(EntityManagerInterface $entityManager): Response
-{
-    $listedenviesRepository = $entityManager->getRepository(Listedenvies::class);
+    
 
-    // Récupérer tous les éléments de la liste d'envies
-    $listedenvies = $listedenviesRepository->findAll();
-
-    return $this->render('listedenvies.html.twig', [
-        'listedenvies' => $listedenvies,
-    ]);
-}
 
 
 
