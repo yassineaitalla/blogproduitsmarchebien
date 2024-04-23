@@ -44,7 +44,7 @@
                            
                                     <td>
                                         <form action="{{ path('ajouter', {'id': listedEnvie.getIdproduit().getId()}) }}" method="post"> 
-                                            <button type="submit" class="btn btn-primary">Transferer le produit </button>
+                                            <button type="submit" class="btn btn-primary">Ajouter au panier</button>
                                         </form>
                                         <form action="{{ path('supprimer_produit_liste_envies', {'id': listedEnvie.getIdproduit().getId()}) }}" method="post"> 
                                             <button type="submit" class="btn btn-danger">Supprimer le produit </button>

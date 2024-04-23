@@ -61,12 +61,8 @@ public function ajouterAuPanier(Request $request, $id, SessionInterface $session
         // Redirection vers une page d'erreur ou affichage d'un message d'erreur
     }
 
-    // Vérifier si le produit existe déjà dans le panier pour cet utilisateurr
-    $panierExistant = $this->entityManager->getRepository(Panier::class)->findOneBy(['client' => $client, 'id_produit' => $produit]);
-
     // Récupérer la quantité saisie par l'utilisateur
     $quantite = $request->request->get('quantite');
-    $longueurCm = $request->request->get('longueur');
     $inp = $request->request->get('inp');
 
     // Vérifier si la quantité est définie et non vide
@@ -77,38 +73,33 @@ public function ajouterAuPanier(Request $request, $id, SessionInterface $session
         $quantite = 1;
     }
 
-    // Calculer le total en multipliant la quantité par le prix du produit
-    $total = $quantite * $produit->getPrix();
+    // Calculer le prix total en fonction de la longueur sélectionnée
+    $prixInitial = $produit->getPrix();
+    $total = $inp * $prixInitial * $quantite ;
+   
 
-    // Si le produit n'est pas déjà dans le panier, l'ajouter
-    if (!$panierExistant) {
-        // Créer une nouvelle instance de Panier
-        $panier = new Panier();
-        // Définir l'ID du produit dans le panier
-        $panier->setIdProduit($produit);
-        // Définir le total dans le panier
-        $panier->setTotal($total);
-        // Définir la quantité dans le panier
-        $panier->setQuantite($quantite);
-        $panier->setLongueurcm($inp);
-        $prixInitial = $produit->getPrix();
+    // Calculer le prix de découpe en fonction de la masse linéaire, du coefficient et de la longueur sélectionnée
+    $masseLineaire = $produit->getMasseLineaireKgMetre();
+    $coef = $produit->getCoef();
+    $prixDecoupe = $masseLineaire * $coef * $inp * $quantite;
+    $total = $inp * $prixInitial * $quantite + $prixDecoupe;
 
-// Calculer le prix total en fonction de la longueur sélectionnée
-$total = $longueurCm * $prixInitial;
-
-        // Définir le client dans le panier
-        $panier->setClient($client);
-       
-        
-        // Persister le panier
-        $this->entityManager->persist($panier);
-    } else {
-        // Si le produit est déjà dans le panier, modifier la quantité et le total
-        $panierExistant->setQuantite($quantite);
-        $panierExistant->setTotal($total);
-        $panierExistant->setLongueurcm($inp);
-        
-    }
+    // Créer une nouvelle instance de Panier
+    $panier = new Panier();
+    // Définir l'ID du produit dans le panier
+    $panier->setIdProduit($produit);
+    // Définir le total dans le panier
+    $panier->setTotal($total);
+    // Définir la quantité dans le panier
+    $panier->setQuantite($quantite);
+    // Définir la longueur dans le panier
+    $panier->setLongueurcm($inp);
+    // Définir le client dans le panier
+    $panier->setClient($client);
+    $panier->setPrixdecoupe($prixDecoupe);
+    
+    // Persister le panier
+    $this->entityManager->persist($panier);
 
     // Enregistrer les modifications dans la base de données
     $this->entityManager->flush();
@@ -116,6 +107,7 @@ $total = $longueurCm * $prixInitial;
     // Rediriger l'utilisateur vers une page de confirmation ou à la page précédente
     return $this->redirectToRoute('produits');
 }
+
 
 
 

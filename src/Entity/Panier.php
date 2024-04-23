@@ -105,4 +105,19 @@ public function setLongueurcm(?string $Longueurcm): static
     return $this;
 }
 
+#[ORM\Column(nullable: true)] // Définit la colonne comme nullable
+private ?string $Prixdecoupe = null;
+
+public function getPrixdecoupe(): ?string
+{
+    return $this->Prixdecoupe;
+}
+
+public function setPrixdecoupe(?string $Prixdecoupe): static
+{
+    $this->Prixdecoupe = $Prixdecoupe;
+
+    return $this;
+}
+
 }
