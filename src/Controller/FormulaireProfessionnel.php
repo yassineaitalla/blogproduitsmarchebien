@@ -21,6 +21,9 @@ class FormulaireProfessionnel extends AbstractController
             $civilite = $request->request->get('civilite');
             $nom = $request->request->get('nom');
             $prenom = $request->request->get('prenom');
+            $Ville = $request->request->get('Ville');
+            $CodePostal = $request->request->get('CodePostal');
+            $Adresse = $request->request->get('Adresse');
             $nomSociete = $request->request->get('societe');
             $siret = $request->request->get('siret');
             $telephone = $request->request->get('telephone');
@@ -41,6 +44,9 @@ class FormulaireProfessionnel extends AbstractController
             $client->setNom($nom);
             $client->setPrenom($prenom);
             $client->settypeclient($typeclient);
+            $client->setAdresse($Adresse);
+            $client->setCodePostal($CodePostal);
+            $client->setVille($Ville);
             $client->setTelephone($telephone);
             $client->setEmail($email);
             $client->setMotdepasse($motdepasse);

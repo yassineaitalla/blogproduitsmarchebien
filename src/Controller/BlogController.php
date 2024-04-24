@@ -452,6 +452,7 @@ public function getClientInfo($id, EntityManagerInterface $entityManager): Respo
     $email = $client->getEmail();
     $telephone = $client->getTelephone();
     $motdepasse = $client->getMotdepasse();
+    $motdepasse = $client->getMotdepasse();
 
     // Transmettre les informations du client au template Twig
     return $this->render('informations.html.twig', [

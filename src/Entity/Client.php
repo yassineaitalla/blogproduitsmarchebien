@@ -31,7 +31,17 @@ class Client implements UserInterface
     #[ORM\Column(length: 255)]
     private ?string $email;
 
-   
+    #[ORM\Column(length: 255)]
+    private ?string $Adresse;
+
+    #[ORM\Column(length: 255)]
+    private ?string $Codepostal;
+
+    #[ORM\Column(length: 255)]
+    private ?string $Ville;
+
+    
+
 
     #[ORM\Column(length: 255)]
     private ?string $motdepasse;
@@ -68,6 +78,18 @@ class Client implements UserInterface
         return $this;
     }
 
+    public function getAdresse(): ?string
+    {
+        return $this->Adresse;
+    }
+
+    public function setAdresse(string $Adresse): self
+    {
+        $this->Adresse = $Adresse;
+
+        return $this;
+    }
+
     public function getNom(): ?string
     {
         return $this->nom;
@@ -79,6 +101,32 @@ class Client implements UserInterface
 
         return $this;
     }
+
+    public function getCodepostal(): ?string
+    {
+        return $this-> Codepostal;
+    }
+
+    public function setCodepostal(string $Codepostal): self
+    {
+        $this-> Codepostal = $Codepostal;
+
+        return $this;
+    }
+
+    public function getVille(): ?string
+    {
+        return $this-> Ville;
+    }
+
+    public function setVille(string $Ville): self
+    {
+        $this-> Ville = $Ville;
+
+        return $this;
+    }
+
+   
 
     
 

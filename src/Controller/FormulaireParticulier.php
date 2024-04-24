@@ -29,6 +29,9 @@ class FormulaireParticulier extends AbstractController
             
             $telephone = $request->request->get('telephone');
             $email = $request->request->get('email');
+            $Ville = $request->request->get('Ville');
+            $CodePostal = $request->request->get('CodePostal');
+            $Adresse = $request->request->get('Adresse');
             $motdepasse = $request->request->get('motdepasse');
             $typeclient = $request->request->get('typeclient');
 
@@ -46,6 +49,9 @@ class FormulaireParticulier extends AbstractController
             $client->setPrenom($prenom);
             $client->setTelephone($telephone);
             $client->setEmail($email);
+            $client->setAdresse($Adresse);
+            $client->setCodePostal($CodePostal);
+            $client->setVille($Ville);
             $client->setMotdepasse($motdepasse);
             $client->settypeclient($typeclient);
 
