@@ -52,7 +52,7 @@
                                 </td>
                                 <td>{{ panier.Longueurcm }} Mètre</td>
                                 <td>{{ panier.prixDecoupe }} €  </td>
-                                <td>{{ panier.getIdProduit().getmasseLineaireKgMetre() }} Kg </td>
+                                <td>{{ poidsKg }} Kg </td>
                                 <td>
                                     <form action="{{ path('supprimerproduitpanier', {'id': panier.getIdProduit().getId()}) }}" method="post"> 
                                         <button type="submit" class="btn btn-danger">Supprimer le produit</button>

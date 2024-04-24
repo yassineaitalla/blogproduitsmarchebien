@@ -18,6 +18,10 @@ class Panier
 
     private ?float $total = null;
 
+    #[ORM\Column]
+
+    private ?float $Poids = null;
+
     #[ORM\ManyToOne(inversedBy: 'paniers')]
     #[ORM\JoinColumn(nullable: false)]
     private ?produit $id_produit = null;
@@ -39,6 +43,19 @@ class Panier
     public function setTotal(float $total): static
     {
         $this->total = $total;
+
+        return $this;
+    }
+
+
+    public function getPoids(): ?float
+    {
+        return $this->Poids;
+    }
+
+    public function setPoids(float $Poids): static
+    {
+        $this->Poids = $Poids;
 
         return $this;
     }
