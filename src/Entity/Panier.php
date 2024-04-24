@@ -105,19 +105,19 @@ class Panier
         return $this;
     }
 
-    // colonne longueurcm
+    // colonne longueurMetre
 
     #[ORM\Column(nullable: true)] // Définit la colonne comme nullable
-private ?string $Longueurcm = null;
+private ?string $LongueurMetre = null;
 
-public function getLongueurcm(): ?string
+public function getLongueurMetre(): ?string
 {
-    return $this->Longueurcm;
+    return $this->LongueurMetre;
 }
 
-public function setLongueurcm(?string $Longueurcm): static
+public function setLongueurMetre(?string $LongueurMetre): static
 {
-    $this->Longueurcm = $Longueurcm;
+    $this->LongueurMetre = $LongueurMetre;
 
     return $this;
 }

@@ -37,9 +37,12 @@
                         <td colspan="3" class="text-right"><strong>Total TTC:</strong></td>
                         <td class="text-right">{{ sommeTotal }} €</td>
                     </tfoot>
+
+                    
                 </tr>
                 {% endif %}
             </thead>
+           
             <tbody>
                 {% for panier in panier %}
                 <tr>
@@ -53,15 +56,31 @@
                         {{ panier.getIdProduit().getprix() * panier.quantite }} 
                         {% endif %}
                     </td>
-                    <td>{{ panier.Longueurcm }} Mètre</td>
+                    <td>{{ panier.LongueurMetre }} Mètre</td>
                     <td>{{ panier.prixDecoupe }} €</td>
-                    <td>{{ panier.getIdProduit().getmasseLineaireKgMetre() }} Kg/M</td>
+                    <td>{{ panier.Poids() }} Kg</td>
+
+                   
+
+                    
+
                     <td>
                        
                     </td>
                 </tr>
                 {% endfor %}
             </tbody>
+
+            <br>
+            <br>
+            <br>
+
+            <tfoot>
+                <tr>
+                    <td colspan="3" class="text-right"><strong>Poids Total:</strong></td>
+                    <td class="text-right" style="margin-right: -20px;">{{ poidsTotal }} Kg</td>
+                </tr>
+            </tfoot>
         </table>
 
         <div class="mb-3">

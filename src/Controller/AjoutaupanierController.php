@@ -76,13 +76,17 @@ public function ajouterAuPanier(Request $request, $id, SessionInterface $session
     // Calculer le prix total en fonction de la longueur sélectionnée
     $prixInitial = $produit->getPrix();
     $total = $inp * $prixInitial * $quantite ;
-   
+
+    $poidsKg = 0; // Initialiser le poids total du panier à zéro
+  
+        
 
     // Calculer le prix de découpe en fonction de la masse linéaire, du coefficient et de la longueur sélectionnée
     $masseLineaire = $produit->getMasseLineaireKgMetre();
     $coef = $produit->getCoef();
     $prixDecoupe = $masseLineaire * $coef * $inp * $quantite;
     $total = $inp * $prixInitial * $quantite + $prixDecoupe;
+    $poidsKg= $masseLineaire * $inp * $quantite;
 
     // Créer une nouvelle instance de Panier
     $panier = new Panier();
@@ -93,9 +97,10 @@ public function ajouterAuPanier(Request $request, $id, SessionInterface $session
     // Définir la quantité dans le panier
     $panier->setQuantite($quantite);
     // Définir la longueur dans le panier
-    $panier->setLongueurcm($inp);
+    $panier->setLongueurMetre($inp);
     // Définir le client dans le panier
     $panier->setClient($client);
+    $panier->setPoids($poidsKg);
     $panier->setPrixdecoupe($prixDecoupe);
     
     // Persister le panier

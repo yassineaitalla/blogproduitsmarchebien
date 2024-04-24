@@ -40,6 +40,11 @@ class DemanderDevisController extends AbstractController
             $sommeTotal += $produit->getTotal(); // Supposons que vous ayez une méthode getTotal() dans l'entité Panier qui retourne le prix total
         }
 
+        $poidsTotal = 0;
+        foreach ($panier as $produitPanier) {
+            $poidsTotal += $produitPanier->getPoids();
+        }
+
         // Récupérer le message depuis la session ou une autre source de données
         $message = $request->getSession()->get('message'); // Remplacer par la méthode pour récupérer le message
         
@@ -47,6 +52,7 @@ class DemanderDevisController extends AbstractController
             'panier' => $panier,
             'message' => $message,
             'sommeTotal' => $sommeTotal,
+            'poidsTotal' =>$poidsTotal
         ]);
     }
 }

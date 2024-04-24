@@ -32,11 +32,15 @@
                                     <td class="text-right">{{ sommeTotal }} €</td>
                                 </tr>
                             </tfoot>
+
+                            
                         {% endif %}
                                 
                                
                             </tr>
                         </thead>
+
+                        
                         <tbody>
                             {% for panier in panier %}
                             <tr>
@@ -50,9 +54,9 @@
                                         {{ panier.getIdProduit().getprix()* panier.quantite }} 
                                     {% endif %}
                                 </td>
-                                <td>{{ panier.Longueurcm }} Mètre</td>
+                                <td>{{ panier.LongueurMetre }} Mètre</td>
                                 <td>{{ panier.prixDecoupe }} €  </td>
-                                <td>{{ poidsKg }} Kg </td>
+                                <td>{{ panier.Poids}} Kg </td>
                                 <td>
                                     <form action="{{ path('supprimerproduitpanier', {'id': panier.getIdProduit().getId()}) }}" method="post"> 
                                         <button type="submit" class="btn btn-danger">Supprimer le produit</button>
@@ -61,12 +65,20 @@
                             </tr>
                             {% endfor %}
                         </tbody>
+
+                        <tfoot>
+                            <tr>
+                                <td colspan="3" class="text-right"><strong>Poids Total:</strong></td>
+                                <td class="text-right" style="margin-right: -20px;">{{ poidsTotal }} Kg</td>
+                            </tr>
+                        </tfoot>
                        
 
                    
                             
                        
                     </table>
+
                   
                     {% if afficherPasserCommande %}
                         <a href="#" class="btn btn-primary">Passer commande</a>
