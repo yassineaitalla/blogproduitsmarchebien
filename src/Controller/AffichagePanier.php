@@ -30,7 +30,7 @@ public function affichagePanier(Request $request): Response
     // Initialiser la variable $panier à null
     $panier = null;
 
-    // Récupérer l'ID de l'utilisateur connecté depuis la session
+    // Récupérer l'ID de l'utilisateur connecté depuis la sessionn
     $clientId = $request->getSession()->get('client_id');
 
     // Si l'ID du client n'est pas défini, afficher un message pour indiquer qu'il n'y a pas besoin d'un tableau

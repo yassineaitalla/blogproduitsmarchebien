@@ -167,5 +167,6 @@ public function getDistance(): ?string
     
         return $this;
     }
+    
 
 }
