@@ -30,6 +30,14 @@ class Panier
 
     private ?int $quantite = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $Distance;
+
+    #[ORM\Column(length: 255)]
+    private ?string $PrixLivraison;
+
+   
+
     public function getId(): ?int
     {
         return $this->id;
@@ -136,5 +144,28 @@ public function setPrixdecoupe(?string $Prixdecoupe): static
 
     return $this;
 }
+
+public function getDistance(): ?string
+    {
+        return $this->Distance;
+    }
+
+    public function setDistance(string $Distance): static
+    {
+        $this->Distance = $Distance;
+
+        return $this;
+    }
+    public function getPrixLivraison(): ?string
+    {
+        return $this->PrixLivraison;
+    }
+    
+    public function setPrixLivraison(?string $PrixLivraison): static
+    {
+        $this->PrixLivraison = $PrixLivraison;
+    
+        return $this;
+    }
 
 }
