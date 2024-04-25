@@ -25,9 +25,6 @@ class CalculerDistanceController extends AbstractController
     #[Route('/calculer-distance', name: 'calculer_distance')]
     public function calculerDistance(Request $request): JsonResponse
     {
-        // Récupérer l'ID du client connecté depuis la session
-        $clientId = $request->getSession()->get('client_id');
-
         // Récupérer l'adresse de l'entrepôt depuis la base de données
         $entrepotRepository = $this->entityManager->getRepository(Entrepot::class);
         $entrepot = $entrepotRepository->findOneBy([]);
@@ -36,23 +33,20 @@ class CalculerDistanceController extends AbstractController
             return $this->json(['error' => 'Entrepot not found.']);
         }
 
-        // Récupérer l'adresse du client à partir de son ID
-        $client = $this->entityManager->getRepository(Client::class)->find($clientId);
+        // Adresses à comparer
+        $address1 = '10 avenue de l\'Europe, Colombes, 92700';
+        $address2 = '8 avenue de l\'Europe, Colombes, 92700';
 
-        if (!$client) {
-            return $this->json(['error' => 'Client not found.']);
-        }
+        // Récupérer les coordonnées géographiques des adresses
+        $coordinates1 = $this->getCoordinates($address1);
+        $coordinates2 = $this->getCoordinates($address2);
 
-        // Récupérer les coordonnées géographiques des adresses du client et de l'entrepôt
-        $clientCoordinates = $this->getCoordinates($client->getAdresse());
-        $entrepotCoordinates = $this->getCoordinates($entrepot->getAdresseEntrepot());
-
-        if (!$clientCoordinates || !$entrepotCoordinates) {
-            return $this->json(['error' => 'Failed to retrieve coordinates for client or entrepot.']);
+        if (!$coordinates1 || !$coordinates2) {
+            return $this->json(['error' => 'Failed to retrieve coordinates for one or both addresses.']);
         }
 
         // Calculer la distance entre les deux points
-        $distance = $this->calculateDistanceBetweenPoints($clientCoordinates, $entrepotCoordinates);
+        $distance = $this->calculateDistanceBetweenPoints($coordinates1, $coordinates2);
 
         // Retourner la distance en kilomètres sous forme de réponse JSON
         return $this->json(['distance_km' => $distance]);
