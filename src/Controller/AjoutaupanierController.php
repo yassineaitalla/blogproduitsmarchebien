@@ -85,6 +85,8 @@ public function ajouterAuPanier(Request $request, $id, SessionInterface $session
     $masseLineaire = $produit->getMasseLineaireKgMetre();
     $poidsKg = $masseLineaire * $inp * $quantite;
 
+    $PrixLivraison = $masseLineaire * $inp * $quantite;
+
     // Récupérer l'adresse de l'entrepôt depuis la base de données
     $entrepotRepository = $entityManager->getRepository(Entrepot::class);
     $entrepot = $entrepotRepository->findOneBy([]);
@@ -123,6 +125,7 @@ public function ajouterAuPanier(Request $request, $id, SessionInterface $session
     // Définir le poids dans le panier
     $panier->setPoids($poidsKg);
     $panier->setPrixdecoupe($prixDecoupe);
+    $panier->setPrixLivraison($PrixLivraison);
     // Définir la distance dans le panier
     $panier->setDistance($distance['value'] . ' ' . $distance['unit']);
 
