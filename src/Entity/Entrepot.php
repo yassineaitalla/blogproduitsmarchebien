@@ -19,6 +19,12 @@ class Entrepot
     #[ORM\Column(length: 255)]
     private ?string $AdresseEntrepot = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $VilleEntrepot = null; 
+
+    #[ORM\Column(length: 255)]
+    private ?string $CodePostal = null;  
+
     public function getId(): ?int
     {
         return $this->id;
@@ -47,5 +53,31 @@ class Entrepot
 
         return $this;
     }
+
+    public function getVilleEntrepot(): ?string
+    {
+        return $this->VilleEntrepot;
+    }
+
+    public function setVilleEntrepot(string $VilleEntrepot): static
+    {
+        $this->VilleEntrepot = $VilleEntrepot;
+
+        return $this;
+    }
+
+    public function getCodePostal(): ?string
+    {
+        return $this->CodePostal;
+    }
+
+    public function setCodePostal(string $CodePostal): static
+    {
+        $this->CodePostal = $CodePostal;
+
+        return $this;
+    }
+
+    
 }
 
