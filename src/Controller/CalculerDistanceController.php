@@ -34,8 +34,28 @@ class CalculerDistanceController extends AbstractController
         }
 
         // Adresses à comparer
-        $address1 = '10 avenue de l\'Europe, Colombes, 92700';
-        $address2 = '8 avenue de l\'Europe, Colombes, 92700';
+       // Récupérer l'adresse de l'entrepôt depuis la base de données
+$entrepotRepository = $this->entityManager->getRepository(Entrepot::class);
+$entrepot = $entrepotRepository->findOneBy([]);
+
+if (!$entrepot) {
+    return $this->json(['error' => 'Entrepot not found.']);
+
+
+}
+
+$clientId = $request->getSession()->get('client_id');
+
+// Récupérer l'adresse du client à partir de son ID
+$client = $this->entityManager->getRepository(Client::class)->find($clientId);
+
+if (!$client) {
+    return $this->json(['error' => 'Client not found.']);
+}
+
+// Récupérer les adresses
+$address1 = $entrepot->getAdresseEntrepot() . ', ' . $entrepot->getVilleEntrepot() . ', ' . $entrepot->getCodePostal();
+$address2 = $client->getAdresse() . ', ' . $client->getVille() . ', ' . $client->getCodePostal();
 
         // Récupérer les coordonnées géographiques des adresses
         $coordinates1 = $this->getCoordinates($address1);
@@ -75,23 +95,30 @@ class CalculerDistanceController extends AbstractController
         }
     }
 
-    private function calculateDistanceBetweenPoints(array $point1, array $point2): float
-    {
-        // Calculer la distance entre deux points en utilisant la formule Haversine
-        $earthRadius = 6371; // Rayon moyen de la Terre en kilomètres
-        $lat1 = deg2rad($point1['latitude']);
-        $lon1 = deg2rad($point1['longitude']);
-        $lat2 = deg2rad($point2['latitude']);
-        $lon2 = deg2rad($point2['longitude']);
+    private function calculateDistanceBetweenPoints(array $point1, array $point2): array
+{
+    // Calculer la distance entre deux points en utilisant la formule Haversine
+    $earthRadius = 6371; // Rayon moyen de la Terre en kilomètres
+    $lat1 = deg2rad($point1['latitude']);
+    $lon1 = deg2rad($point1['longitude']);
+    $lat2 = deg2rad($point2['latitude']);
+    $lon2 = deg2rad($point2['longitude']);
 
-        $deltaLat = $lat2 - $lat1;
-        $deltaLon = $lon2 - $lon1;
+    $deltaLat = $lat2 - $lat1;
+    $deltaLon = $lon2 - $lon1;
 
-        $a = sin($deltaLat / 2) * sin($deltaLat / 2) + cos($lat1) * cos($lat2) * sin($deltaLon / 2) * sin($deltaLon / 2);
-        $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
+    $a = sin($deltaLat / 2) * sin($deltaLat / 2) + cos($lat1) * cos($lat2) * sin($deltaLon / 2) * sin($deltaLon / 2);
+    $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
 
-        $distance = $earthRadius * $c;
+    $distance = $earthRadius * $c;
 
-        return $distance;
+    if ($distance < 1) {
+        $distanceMeters = round($distance * 1000); // Convertir en mètres et arrondir
+        return ['value' => $distanceMeters, 'unit' => 'mètres'];
+    } else {
+        $distanceKilometers = round($distance, 2); // Arrondir à deux décimales
+        return ['value' => $distanceKilometers, 'unit' => 'kilomètres'];
     }
+}
+
 }
