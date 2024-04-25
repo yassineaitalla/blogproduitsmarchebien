@@ -6,7 +6,7 @@ use App\Entity\Client;
 use App\Entity\Entrepot;
 use App\Entity\Panier;
 use App\Entity\Produit;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
+
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,14 +32,14 @@ class AjoutaupanierController extends AbstractController
     
 
 #[Route("/ajouter-au-panier/{id}", name: "ajouter_au_panier")]
-public function ajouterAuPanier(Request $request, $id, SessionInterface $session, EntityManagerInterface $entityManager, FlashBagInterface  $flashBag): RedirectResponse
+public function ajouterAuPanier(Request $request, $id, SessionInterface $session, EntityManagerInterface $entityManager, ): RedirectResponse
 {
     // Récupérer le produit à partir de son identifiant
     $produit = $entityManager->getRepository(Produit::class)->find($id);
 
     // Si le produit n'existe pas, rediriger vers une page d'erreur ou afficher un message d'erreur
     if (!$produit) {
-        $flashBag->add('error', 'Produit non trouvé.');
+        
         // Redirection vers une page d'erreur ou affichage d'un message d'erreur
     }
 
@@ -48,7 +48,7 @@ public function ajouterAuPanier(Request $request, $id, SessionInterface $session
 
     // Si l'ID du client n'est pas défini, rediriger vers une page d'erreur ou afficher un message d'erreur
     if (!$clientId) {
-        $flashBag->add('error', 'Client  non trouvé.');
+       
     }
 
     // Récupérer le client à partir de son ID
@@ -85,8 +85,6 @@ public function ajouterAuPanier(Request $request, $id, SessionInterface $session
     $masseLineaire = $produit->getMasseLineaireKgMetre();
     $poidsKg = $masseLineaire * $inp * $quantite;
 
-    $PrixLivraison = $masseLineaire * $inp * $quantite;
-
     // Récupérer l'adresse de l'entrepôt depuis la base de données
     $entrepotRepository = $entityManager->getRepository(Entrepot::class);
     $entrepot = $entrepotRepository->findOneBy([]);
@@ -109,6 +107,8 @@ public function ajouterAuPanier(Request $request, $id, SessionInterface $session
 
     // Calculer la distance entre les deux points
     $distance = $this->calculateDistanceBetweenPoints($coordinates1, $coordinates2);
+    
+         $prixLivraison = $this->calculerPrixLivraison($distance['value'], $poidsKg);
 
     // Créer une nouvelle instance de Panier
     $panier = new Panier();
@@ -125,9 +125,10 @@ public function ajouterAuPanier(Request $request, $id, SessionInterface $session
     // Définir le poids dans le panier
     $panier->setPoids($poidsKg);
     $panier->setPrixdecoupe($prixDecoupe);
-    $panier->setPrixLivraison($PrixLivraison);
+    
     // Définir la distance dans le panier
     $panier->setDistance($distance['value'] . ' ' . $distance['unit']);
+    $panier->setPrixLivraison($prixLivraison);
 
     // Persister le panier
     $entityManager->persist($panier);
@@ -137,6 +138,19 @@ public function ajouterAuPanier(Request $request, $id, SessionInterface $session
 
     // Redirection vers la page des produits
     return $this->redirectToRoute('produits');
+}
+
+private function calculerPrixLivraison($distance, $poids)
+{
+    // Vos calculs pour le prix de livraison en fonction de la distance et du poids
+    // Vous pouvez utiliser la formule que vous avez fournie dans votre question
+    // Par exemple :
+    $base = 40;
+    $prix = $base + (0.3 * $distance);
+    if ($poids > 200) {
+        $prix += ceil($poids / 200) * 20;
+    }
+    return $prix;
 }
 
    
