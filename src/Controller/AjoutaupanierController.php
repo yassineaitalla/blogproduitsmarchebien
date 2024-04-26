@@ -85,30 +85,49 @@ public function ajouterAuPanier(Request $request, $id, SessionInterface $session
     $masseLineaire = $produit->getMasseLineaireKgMetre();
     $poidsKg = $masseLineaire * $inp * $quantite;
 
-    // Récupérer l'adresse de l'entrepôt depuis la base de données
-    $entrepotRepository = $entityManager->getRepository(Entrepot::class);
-    $entrepot = $entrepotRepository->findOneBy([]);
+   // Récupérer l'adresse du client
+   $addressClient = $client->getAdresse() . ', ' . $client->getVille() . ', ' . $client->getCodePostal();
 
-    if (!$entrepot) {
+   // Récupérer tous les entrepôts depuis la base de données
+   $entrepots = $entityManager->getRepository(Entrepot::class)->findAll();
+
+   // Initialiser la distance minimale à une valeur élevée
+   $minDistance = PHP_INT_MAX;
+   $closestEntrepot = null;
+
+   // Parcourir tous les entrepôts pour trouver le plus proche du client
+     // Parcourir tous les entrepôts pour trouver le plus proche du client
+     foreach ($entrepots as $entrepot) {
+        // Récupérer l'adresse de l'entrepôt
+        $addressEntrepot = $entrepot->getAdresseEntrepot() . ', ' . $entrepot->getVilleEntrepot() . ', ' . $entrepot->getCodePostal();
+ 
+        // Récupérer les coordonnées géographiques des adresses
+        $coordinatesClient = $this->getCoordinates($addressClient);
+        $coordinatesEntrepot = $this->getCoordinates($addressEntrepot);
+ 
+        if ($coordinatesClient && $coordinatesEntrepot) {
+            // Calculer la distance entre le client et l'entrepôt
+            $distanceInfo = $this->calculateDistanceBetweenPoints($coordinatesClient, $coordinatesEntrepot);
+            $distance = $distanceInfo['value'] ?? null; // Utiliser la valeur par défaut null si 'value' n'existe pas dans le tableau
+            $distanceUnit = $distanceInfo['unit'] ?? ''; // Utiliser une chaîne vide comme valeur par défaut pour 'unit'
+ 
+            // Mettre à jour la distance minimale et l'entrepôt le plus proche si nécessaire
+            if ($distance !== null && $distance < $minDistance) {
+                $minDistance = $distance;
+                $closestEntrepot = $entrepot;
+            }
+        }
+    }
+ 
+    // Si aucun entrepôt n'a été trouvé, rediriger vers une page d'erreur ou afficher un message d'erreur
+    if (!$closestEntrepot) {
         // Redirection vers une page d'erreur ou affichage d'un message d'erreur
     }
-
-    // Récupérer les adresses
-    $address1 = $entrepot->getAdresseEntrepot() . ', ' . $entrepot->getVilleEntrepot() . ', ' . $entrepot->getCodePostal();
-    $address2 = $client->getAdresse() . ', ' . $client->getVille() . ', ' . $client->getCodePostal();
-
-    // Récupérer les coordonnées géographiques des adresses
-    $coordinates1 = $this->getCoordinates($address1);
-    $coordinates2 = $this->getCoordinates($address2);
-
-    if (!$coordinates1 || !$coordinates2) {
-        // Redirection vers une page d'erreur ou affichage d'un message d'erreur
-    }
-
-    // Calculer la distance entre les deux points
-    $distance = $this->calculateDistanceBetweenPoints($coordinates1, $coordinates2);
-    
-         $prixLivraison = $this->calculerPrixLivraison($distance['value'], $poidsKg);
+ 
+    // Calculer le prix de livraison en fonction de la distance et du poids
+    $prixLivraison = $this->calculerPrixLivraison($minDistance, $poidsKg);
+ 
+ 
 
     // Créer une nouvelle instance de Panier
     $panier = new Panier();
@@ -124,11 +143,11 @@ public function ajouterAuPanier(Request $request, $id, SessionInterface $session
     $panier->setClient($client);
     // Définir le poids dans le panier
     $panier->setPoids($poidsKg);
-    $panier->setPrixdecoupe($prixDecoupe);
+    $panier->setPrixdecoupe(round($prixDecoupe, 2));
     
     // Définir la distance dans le panier
-    $panier->setDistance($distance['value'] . ' ' . $distance['unit']);
-    $panier->setPrixLivraison($prixLivraison);
+    $panier->setDistance($minDistance . ' ' . $distanceUnit);
+    $panier->setPrixLivraison(round($prixLivraison, 2)); // arondir 
 
     // Persister le panier
     $entityManager->persist($panier);

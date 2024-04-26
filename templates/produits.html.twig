@@ -37,14 +37,18 @@
                                                 <div class="row">
                                                     <div class="col">
                                                         <label for="longueur">Choisissez votre longueur:</label>
-                                                        <select name="inp" id="inp{{ produit.id }}" class="form-control" onchange="updatePrice(this.value, '{{ produit.id }}')">
+                                                        <select name="inp" id="surMesureSelect" class="form-control" onchange="toggleCustomMeasurementInput()">
                                                             <option value="1">1 mètre</option>
                                                             <option value="2">2 mètres</option>
                                                             <option value="3">3 mètres</option>
                                                             <option value="4">4 mètres</option>
                                                             <option value="5">5 mètres</option>
                                                             <option value="6">6 mètres</option>
+                                                            <option value="surMesure">Mesure</option> <!-- Ajoutez cette option -->
                                                         </select>
+                                                        
+                                                        <!-- Champ de saisie pour les centimètres (initialement caché) -->
+                                                        <input type="number" name="customMeasurement" id="customMeasurementInput" style="display: none;" placeholder="Entrez la mesure en cm">
                                                         
                                                        
                                                     </div>
@@ -112,31 +116,53 @@
             // Définir un objet pour stocker le prix initial de chaque produit
             var prixInitials = {};
         
+            // Mettre à jour l'interface en fonction de la sélection de mesure
+            function updateMeasurementType(produitId, measurementType) {
+                if (measurementType === 'surMesure') {
+                    // Afficher le champ de saisie pour la mesure sur mesure
+                    document.getElementById('inpPredefini' + produitId).style.display = 'none';
+                    document.getElementById('inpSurMesure' + produitId).style.display = 'block';
+                } else {
+                    // Afficher le menu déroulant pour les mesures prédéfinies
+                    document.getElementById('inpSurMesure' + produitId).style.display = 'none';
+                    document.getElementById('inpPredefini' + produitId).style.display = 'block';
+                }
+            }
+        
             // Mettre à jour le prix du produit en fonction de la longueur choisie et de l'ID du produit
             function updatePrice(longueur, produitId) {
-                // Vérifier si le prix initial pour ce produit a déjà été stocké
-                if (!prixInitials[produitId]) {
-                    // Récupérez le prix initial du produit et stockez-le dans l'objet
-                    prixInitials[produitId] = parseFloat(document.getElementById('prixInitial' + produitId).textContent);
-                }
-        
-                // Récupérez la quantité saisie par l'utilisateur
+                // Récupérer la quantité saisie par l'utilisateur
                 var quantite = parseInt(document.getElementById('quantite' + produitId).value);
         
-                // Calculez le prix total en fonction de la longueur
+                // Calculer le prix total en fonction de la longueur
                 var prixTotal;
-                if (longueur === 1) {
-                    prixTotal = prixInitials[produitId] * quantite; // Pour 1 mètre, utilisez simplement le prix initial
+                if (longueur === 'surMesure') {
+                    // Récupérer la valeur saisie dans le champ de mesure sur mesure
+                    var mesureSurMesure = parseFloat(document.getElementById('inpSurMesure' + produitId).value);
+                    prixTotal = prixInitials[produitId] * mesureSurMesure * quantite;
                 } else {
-                    prixTotal = prixInitials[produitId] * longueur * quantite; // Pour les autres longueurs, multipliez par la longueur choisie
+                    // Récupérer la longueur prédéfinie sélectionnée
+                    var longueurPredefinie = parseFloat(longueur);
+                    prixTotal = prixInitials[produitId] * longueurPredefinie * quantite;
                 }
         
-                // Mettez à jour l'élément d'affichage du prix correspondant
+                // Mettre à jour l'élément d'affichage du prix correspondant
                 document.getElementById('prixProduit' + produitId).innerHTML = "Prix du produit <span id='prixInitial" + produitId + "'>" + prixTotal + "</span> € ttc";
-
-                
             }
+
+            // Fonction pour afficher ou masquer le champ de saisie pour les centimètres
+    function toggleCustomMeasurementInput() {
+        var surMesureSelect = document.getElementById('surMesureSelect');
+        var customMeasurementInput = document.getElementById('customMeasurementInput');
+
+        if (surMesureSelect.value === 'surMesure') {
+            customMeasurementInput.style.display = 'block'; // Afficher le champ de saisie pour les centimètres
+        } else {
+            customMeasurementInput.style.display = 'none'; // Masquer le champ de saisie pour les centimètres
+        }
+    }
         </script>
+        
 
        
         

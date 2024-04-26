@@ -49,9 +49,19 @@ public function affichagePanier(Request $request): Response
 
         // Calculer la somme totale des éléments du panier
         $sommeTotal = 0;
+        $prixLivraisonAjoute = false; // Pour indiquer si le prix de livraison a déjà été ajouté
+        
         foreach ($panier as $produit) {
             $sommeTotal += $produit->getTotal();
+            
+            // Vérifier si le prix de livraison n'a pas été déjà ajouté
+            if (!$prixLivraisonAjoute) {
+                $sommeTotal += $produit->getPrixLivraison();
+                $prixLivraisonAjoute = true; // Mettre à true pour indiquer que le prix de livraison a été ajouté
+            }
         }
+        
+
 
         $poidsTotal = 0;
         foreach ($panier as $produitPanier) {
@@ -77,6 +87,7 @@ public function affichagePanier(Request $request): Response
         'afficherDevis' => $afficherDevis,
         'message' => $message,
         'afficherPasserCommande' => $afficherPasserCommande,
+        'prixLivraisonAjoute'=>$prixLivraisonAjoute,
         'poidsTotal' =>$poidsTotal
     ]);
 

@@ -26,6 +26,7 @@
                             <th scope="col">Longueur Mettre</th>
                             <th scope="col">Prix découpe (A revoir)</th>
                             <th scope="col">Poids</th>
+                            <th scope="col">Prix Livraison</th>
                             <tfoot>
                                 <tr>
                                     <td colspan="3" class="text-right"><strong>Total TTC:</strong></td>
@@ -57,6 +58,7 @@
                                 <td>{{ panier.LongueurMetre }} Mètre</td>
                                 <td>{{ panier.prixDecoupe }} €  </td>
                                 <td>{{ panier.Poids}} Kg </td>
+                                <td>{{ panier.prixLivraison}} € </td>
                                 <td>
                                     <form action="{{ path('supprimerproduitpanier', {'id': panier.getIdProduit().getId()}) }}" method="post"> 
                                         <button type="submit" class="btn btn-danger">Supprimer le produit</button>
@@ -72,7 +74,19 @@
                                 <td class="text-right" style="margin-right: -20px;">{{ poidsTotal }} Kg</td>
                             </tr>
                         </tfoot>
-                       
+
+                        {% set prixLivraison = 0 %}
+                        {% for panier in panier %}
+                            {% if loop.first %}
+                                {% set prixLivraison = panier.prixLivraison %}
+                                <tbody>
+                                    <td colspan="3" class="text-right"><strong>Prix Livraison:</strong></td>
+                                    <td class="text-right" style="margin-right: -20px;">{{ panier.prixLivraison }} €</td>
+                                </tbody>
+                            {% endif %}
+                        {% endfor %}
+                        
+                        
 
                    
                             
